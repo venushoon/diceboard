@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>말랑말랑 보드게임 (블루마블 프리미엄 V4.5 최종수정판)</title>
+    <title>말랑말랑 보드게임 (블루마블 프리미엄 V4.6 모바일최적화)</title>
     <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
     <style>
         /* =========================================
@@ -184,7 +184,7 @@
         .marble-center-logo span {
             font-size: 4rem; color: rgba(2, 132, 199, 0.15); text-align: center; font-weight: bold;
             text-shadow: 2px 2px 5px rgba(255,255,255,0.9), -1px -1px 3px rgba(0,0,0,0.05); line-height: 1.2;
-            margin-top: -60px;
+            margin-top: -60px; 
         }
         
         /* 토큰 시인성 극대화 */
@@ -241,7 +241,7 @@
         }
 
         /* =========================================
-           6. 문제 모달 UI (팝업 텍스트 줄바꿈 최적화)
+           6. 문제 모달 UI (팝업 텍스트 줄바꿈 완벽 최적화)
            ========================================= */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.75);
@@ -257,15 +257,15 @@
         #timer-bar-container { width: 100%; height: 12px; background: #e2e8f0; border-radius: 6px; margin-bottom: 15px; overflow: hidden; display: none; }
         #timer-bar { width: 100%; height: 100%; background: #f43f5e; transition: width 1s linear; }
 
-        /* [핵심 수정] 팝업 문제 텍스트 강제 줄바꿈 및 간격 최적화 */
+        /* [핵심 수정] 팝업창 내 문제 텍스트 무조건 예쁘게 줄바꿈 */
         #question-text { 
             font-size: 1.7rem; 
             margin-bottom: 20px; 
             color: #0f172a; 
-            word-break: break-all;      /* 띄어쓰기 없는 긴 텍스트도 무조건 줄바꿈 */
+            word-break: break-all;      /* 띄어쓰기 없는 긴 텍스트 강제 줄바꿈 */
             white-space: pre-wrap;      /* 엔터키 및 자연스러운 줄바꿈 보존 */
             overflow-wrap: break-word; 
-            line-height: 1.4;           
+            line-height: 1.4;           /* 가독성 높은 줄간격 */
             font-weight: bold;
             width: 100%;
             padding: 0 10px;
@@ -321,6 +321,59 @@
         .rank-text { color: #f59e0b; font-size: 4rem; text-shadow: 0 0 20px white; margin-top: 10px;}
         @keyframes popIn { 0% { transform: scale(0.3); opacity: 0; } 60% { transform: scale(1.1); opacity: 1; } 100% { transform: scale(1); opacity: 1; } }
         .animate-pop { animation: popIn 0.5s ease-out forwards; }
+
+        /* =========================================
+           8. 스마트폰/소형 화면 최적화 (Mobile Responsive)
+           ========================================= */
+        @media (max-width: 800px), (max-height: 600px) {
+            h1 { font-size: 1.6rem; margin-bottom: 10px; }
+            #setup-screen { padding: 15px; width: 95%; }
+            .setting-group label { font-size: 0.9rem; }
+            select { font-size: 0.95rem; padding: 6px; }
+            .char-option { font-size: 1.2rem; padding: 2px; }
+            .start-btn { font-size: 1.2rem; padding: 10px; }
+            
+            #turn-indicator { font-size: 1.1rem; padding: 5px 20px; margin: 5px 0; }
+            
+            /* Island mode */
+            .island { width: 45px; height: 45px; font-size: 1.1rem; }
+            .island.start, .island.finish { width: 55px; height: 55px; font-size: 1.2rem; }
+            
+            /* Marble mode */
+            .marble-num { font-size: 0.65rem; padding: 1px 0; }
+            .marble-q { font-size: 0.65rem; padding: 2px; -webkit-line-clamp: 2; line-height: 1.1;}
+            .marble-center-logo span { font-size: 2.2rem; margin-top: -45px; }
+            
+            /* Tokens */
+            .player-token { width: 26px; height: 26px; font-size: 1.1rem; border-width: 2px; }
+            
+            /* Dice */
+            #dice-container { width: 70px; height: 70px; }
+            .dice-face { width: 70px; height: 70px; font-size: 2.5rem; border-radius: 12px; }
+            .front  { transform: rotateY(  0deg) translateZ(35px); } .back   { transform: rotateY(180deg) translateZ(35px); }
+            .right  { transform: rotateY( 90deg) translateZ(35px); } .left   { transform: rotateY(-90deg) translateZ(35px); }
+            .top    { transform: rotateX( 90deg) translateZ(35px); } .bottom { transform: rotateX(-90deg) translateZ(35px); }
+            .dice-3d { transform: translateZ(-35px) rotateX(-15deg) rotateY(-15deg); }
+            #dice-container:active .dice-3d { transform: translateZ(-35px) rotateX(-15deg) rotateY(-15deg) scale(0.9); }
+            .dice-instruction { font-size: 1rem; padding: 5px 15px; margin-bottom: 10px; }
+            @keyframes rollFast { 
+                0% { transform: translateZ(-35px) rotateX(-15deg) rotateY(-15deg); } 
+                100% { transform: translateZ(-35px) rotateX(345deg) rotateY(705deg); } 
+            }
+
+            /* Buttons */
+            .float-btn { width: 40px; height: 40px; font-size: 1.2rem; }
+            #home-btn { top: 10px; left: 10px; }
+            #admin-btn { top: 10px; right: 10px; font-size: 1.5rem; width: 40px; height: 40px;}
+            
+            /* Modal */
+            .clay-modal-box { padding: 15px; width: 95%; }
+            #question-text { font-size: 1.3rem; margin-bottom: 15px; }
+            #answer-input { height: 40px; font-size: 1.3rem; }
+            .num-btn { padding: 8px 0; font-size: 1.2rem; }
+            .submit-btn, .pass-btn { padding: 10px; font-size: 1.1rem; }
+            #open-ended-btn { padding: 10px; font-size: 1.2rem; }
+        }
 
     </style>
 </head>
@@ -708,7 +761,9 @@
         
         const diceEl = document.getElementById('dice');
         diceEl.style.transition = 'none';
-        diceEl.style.transform = 'translateZ(-55px) rotateX(-15deg) rotateY(-15deg)';
+        const isMobile = window.innerWidth <= 800 || window.innerHeight <= 600;
+        const tz = isMobile ? 35 : 55;
+        diceEl.style.transform = `translateZ(-${tz}px) rotateX(-15deg) rotateY(-15deg)`;
         centerDiceWrapper.style.opacity = '1';
         centerDiceWrapper.style.pointerEvents = 'auto';
     }
@@ -739,6 +794,7 @@
 
         const width = boardContainer.clientWidth;
         const height = boardContainer.clientHeight;
+        const isMobile = window.innerWidth <= 800 || window.innerHeight <= 600;
 
         let isHidden = document.getElementById('sel-q-visible').value === 'hide';
 
@@ -779,9 +835,10 @@
             bridgesSvg.innerHTML = svgPath;
 
         } else {
-            let padTop = Math.max(110, height * 0.15); 
-            let padBottom = Math.max(60, height * 0.08); 
-            let padX = Math.max(85, width * 0.08); 
+            // 모바일일 경우 여백을 대폭 줄여서 겹침 방지
+            let padTop = isMobile ? Math.max(60, height * 0.12) : Math.max(110, height * 0.15); 
+            let padBottom = isMobile ? Math.max(30, height * 0.06) : Math.max(60, height * 0.08); 
+            let padX = isMobile ? Math.max(30, width * 0.04) : Math.max(85, width * 0.08); 
             
             let w = width - 2 * padX;
             let h = height - padTop - padBottom;
@@ -792,8 +849,9 @@
             let spaceH = dy * 0.96;
             if(spaceW > 160) spaceW = 160; 
             if(spaceH > 130) spaceH = 130;
-            if(spaceW < 60) spaceW = 60;   
-            if(spaceH < 50) spaceH = 50;
+            // 모바일 환경을 위해 최소 크기 제한을 40px 수준으로 하향
+            if(spaceW < 40) spaceW = 40;   
+            if(spaceH < 35) spaceH = 35;
 
             for(let i=0; i<totalSpaces; i++) {
                 let cx, cy;
@@ -925,6 +983,9 @@
             4: { x: 0, y: 90 }, 5: { x: 90, y: 0 }, 6: { x: 0, y: 180 } 
         };
 
+        const isMobile = window.innerWidth <= 800 || window.innerHeight <= 600;
+        const tz = isMobile ? 35 : 55;
+
         setTimeout(() => {
             if(!isPlaying) return;
             diceEl.className = 'dice-3d'; 
@@ -934,7 +995,7 @@
             void diceEl.offsetWidth; 
             
             diceEl.style.transition = 'transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
-            diceEl.style.transform = `translateZ(-55px) rotateX(${finalX}deg) rotateY(${finalY}deg)`;
+            diceEl.style.transform = `translateZ(-${tz}px) rotateX(${finalX}deg) rotateY(${finalY}deg)`;
             
             setTimeout(() => {
                 if(!isPlaying) return;
@@ -1015,7 +1076,7 @@
         answerInput.value = '';
         currentQ = boardQuestions[spaceIndex];
         
-        let prefix = currentTheme === 'marble' ? '' : `[${spaceIndex}번 칸] `;
+        let prefix = currentTheme === 'marble' ? '' : `[${spaceIndex}번 칸]\n`;
         document.getElementById('question-text').innerText = `${prefix}${currentQ.q}`;
 
         const isMenuOpenEnded = (currentQ.a === "");
@@ -1116,9 +1177,11 @@
             return;
         }
 
+        const isMobile = window.innerWidth <= 800 || window.innerHeight <= 600;
+        const tz = isMobile ? 35 : 55;
         const diceEl = document.getElementById('dice');
         diceEl.style.transition = 'none';
-        diceEl.style.transform = 'translateZ(-55px) rotateX(-15deg) rotateY(-15deg)';
+        diceEl.style.transform = `translateZ(-${tz}px) rotateX(-15deg) rotateY(-15deg)`;
         
         setTimeout(() => {
             if(!isPlaying) return;
