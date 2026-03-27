@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>말랑말랑 모험 보드게임 (프리미엄 에디션)</title>
+    <title>말랑말랑 모험 보드게임 (6인용 프리미엄)</title>
     <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
     <style>
         /* =========================================
-           1. 프리미엄 클레이모피즘 색상 & 변수
+           1. 프리미엄 클레이모피즘 색상 & 6인용 변수
            ========================================= */
         :root {
             --bg-ocean: #f0fdf4; 
@@ -16,11 +16,13 @@
             --clay-island-light: #fef9c3;
             
             --clay-btn: #38bdf8;
-            --clay-btn-dark: #0284c7;
-            --clay-btn-light: #7dd3fc;
             
-            --clay-p1: #f43f5e;
-            --clay-p2: #3b82f6;
+            --clay-p1: #f43f5e; /* 빨강 */
+            --clay-p2: #3b82f6; /* 파랑 */
+            --clay-p3: #10b981; /* 초록 */
+            --clay-p4: #f59e0b; /* 주황 */
+            --clay-p5: #8b5cf6; /* 보라 */
+            --clay-p6: #ec4899; /* 핑크 */
 
             --clay-modal: #ffffff;
             --text-color: #1e293b;
@@ -71,7 +73,7 @@
         }
 
         /* =========================================
-           3. 한 화면에 쏙 들어오는 첫 화면 레이아웃
+           3. 6인용 대응 첫 화면 (크기 최적화)
            ========================================= */
         #app {
             display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -86,136 +88,133 @@
         }
         #admin-btn:hover { opacity: 1; transform: rotate(45deg); }
 
-        h1 { font-size: 2.5rem; text-shadow: 2px 2px 5px rgba(0,0,0,0.1); margin: 0 0 20px 0; color: #0369a1; text-align: center; }
+        h1 { font-size: 2.2rem; text-shadow: 2px 2px 5px rgba(0,0,0,0.1); margin: 0 0 15px 0; color: #0369a1; text-align: center; }
 
         #setup-screen {
-            background: rgba(255, 255, 255, 0.65); padding: 25px; border-radius: 30px;
-            width: 100%; max-width: 600px; box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-            backdrop-filter: blur(15px); display: flex; flex-direction: column; gap: 15px;
+            background: rgba(255, 255, 255, 0.7); padding: 20px 25px; border-radius: 30px;
+            width: 100%; max-width: 650px; box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            backdrop-filter: blur(15px); display: flex; flex-direction: column; gap: 12px;
         }
 
         .setting-row { display: flex; gap: 10px; justify-content: space-between; }
-        .setting-group { flex: 1; display: flex; flex-direction: column; gap: 5px; font-size: 1.1rem; }
+        .setting-group { flex: 1; display: flex; flex-direction: column; gap: 4px; font-size: 1rem; }
         
         select {
-            font-family: 'Jua', sans-serif; font-size: 1.1rem; padding: 10px; border-radius: 15px;
+            font-family: 'Jua', sans-serif; font-size: 1.1rem; padding: 8px; border-radius: 12px;
             border: 2px solid transparent; outline: none; background: white; box-shadow: inset 2px 2px 5px rgba(0,0,0,0.05);
             color: #1e293b; cursor: pointer; width: 100%;
         }
 
-        .char-select-container { display: flex; gap: 5px; justify-content: space-around; background: white; padding: 8px; border-radius: 15px; box-shadow: inset 2px 2px 5px rgba(0,0,0,0.05);}
-        .char-option { font-size: 1.8rem; padding: 5px 10px; cursor: pointer; border-radius: 12px; transition: all 0.2s; border: 3px solid transparent;}
+        /* 6인 캐릭터 선택 그리드 */
+        .char-grid-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .char-select-container { display: flex; gap: 2px; justify-content: space-around; background: white; padding: 5px; border-radius: 12px; box-shadow: inset 2px 2px 5px rgba(0,0,0,0.05);}
+        .char-option { font-size: 1.5rem; padding: 2px 6px; cursor: pointer; border-radius: 10px; transition: all 0.2s; border: 3px solid transparent;}
+        
         .char-option.selected-1p { border-color: var(--clay-p1); background: #ffe4e6;}
         .char-option.selected-2p { border-color: var(--clay-p2); background: #dbeafe;}
+        .char-option.selected-3p { border-color: var(--clay-p3); background: #d1fae5;}
+        .char-option.selected-4p { border-color: var(--clay-p4); background: #fef3c7;}
+        .char-option.selected-5p { border-color: var(--clay-p5); background: #ede9fe;}
+        .char-option.selected-6p { border-color: var(--clay-p6); background: #fce7f3;}
 
-        .start-btn { margin-top: 10px; padding: 15px; font-size: 1.5rem; background: #10b981; letter-spacing: 1px;}
+        .start-btn { margin-top: 5px; padding: 15px; font-size: 1.5rem; background: #10b981; letter-spacing: 1px;}
 
         /* =========================================
-           4. 화면에 완벽하게 꽉 차는 게임 보드
+           4. 게임 보드 (화면 꽉 채움)
            ========================================= */
-        #game-screen {
-            display: none; width: 100%; height: 100%; flex-direction: column; align-items: center; position: relative;
-        }
+        #game-screen { display: none; width: 100%; height: 100%; flex-direction: column; align-items: center; position: relative; }
 
         #turn-indicator {
-            font-size: 1.3rem; padding: 8px 25px; border-radius: 20px; background: white; margin: 10px 0;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1); z-index: 10;
+            font-size: 1.4rem; padding: 8px 30px; border-radius: 20px; background: white; margin: 15px 0 5px 0;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1); z-index: 10; font-weight: bold; transition: color 0.3s;
         }
 
-        .board-container { position: relative; width: 100%; max-width: 1000px; flex: 1; margin-bottom: 90px; } 
+        .board-container { position: relative; width: 100%; max-width: 1000px; flex: 1; margin-bottom: 20px; } 
         
         #bridges { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
         
         .island {
-            position: absolute; width: 60px; height: 60px; border-radius: 50%; background: var(--clay-island);
+            position: absolute; width: 65px; height: 65px; border-radius: 50%; background: var(--clay-island);
             box-shadow: 4px 4px 10px rgba(234, 179, 8, 0.4), -4px -4px 10px rgba(255, 255, 255, 0.9), inset 3px 3px 8px var(--clay-island-light), inset -3px -3px 8px var(--clay-island-dark);
-            z-index: 2; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; color: #854d0e; font-weight: bold; transform: translate(-50%, -50%);
+            z-index: 2; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: #854d0e; font-weight: bold; transform: translate(-50%, -50%);
         }
-        .island.start { background: #6ee7b7; color: #065f46; width: 75px; height: 75px; font-size: 1.6rem;}
-        .island.finish { background: #fca5a5; color: #991b1b; width: 75px; height: 75px; font-size: 1.6rem;}
+        .island.start { background: #6ee7b7; color: #065f46; width: 80px; height: 80px; font-size: 1.7rem;}
+        .island.finish { background: #fca5a5; color: #991b1b; width: 80px; height: 80px; font-size: 1.7rem;}
         
         .player-token {
-            position: absolute; width: 45px; height: 45px; border-radius: 50%; z-index: 10;
-            transform: translate(-50%, -60%); transition: left 0.4s ease-in-out, top 0.4s ease-in-out, transform 0.3s; pointer-events: none;
+            position: absolute; width: 40px; height: 40px; border-radius: 50%; z-index: 10;
+            transition: left 0.4s ease-in-out, top 0.4s ease-in-out, transform 0.3s; pointer-events: none;
             display: flex; align-items: center; justify-content: center; font-size: 1.6rem;
+            box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.4), inset 2px 2px 5px rgba(255,255,255,0.4), inset -2px -2px 5px rgba(0,0,0,0.2);
         }
-        #player1 { background: var(--clay-p1); box-shadow: 3px 3px 8px rgba(190, 18, 60, 0.5), inset 2px 2px 6px rgba(255,255,255,0.5), inset -2px -2px 6px rgba(0,0,0,0.2); }
-        #player2 { background: var(--clay-p2); box-shadow: 3px 3px 8px rgba(29, 78, 216, 0.5), inset 2px 2px 6px rgba(255,255,255,0.5), inset -2px -2px 6px rgba(0,0,0,0.2); display: none; }
+        #player1 { background: var(--clay-p1); }
+        #player2 { background: var(--clay-p2); }
+        #player3 { background: var(--clay-p3); }
+        #player4 { background: var(--clay-p4); }
+        #player5 { background: var(--clay-p5); }
+        #player6 { background: var(--clay-p6); }
         
         .jump-anim { animation: jumpArc 0.4s ease-in-out; }
         @keyframes jumpArc { 
-            0% { margin-top: 0; transform: translate(-50%, -60%) scale(1); } 
-            50% { margin-top: -40px; transform: translate(-50%, -60%) scale(1.1); } 
-            100% { margin-top: 0; transform: translate(-50%, -60%) scale(1); } 
+            0% { margin-top: 0; transform: scale(1); } 
+            50% { margin-top: -30px; transform: scale(1.1); } 
+            100% { margin-top: 0; transform: scale(1); } 
         }
 
         .float-btn {
             position: fixed; width: 50px; height: 50px; border-radius: 50%; font-size: 1.5rem; display: flex; align-items: center; justify-content: center; z-index: 500; box-shadow: 2px 2px 6px rgba(0,0,0,0.15);
         }
         #home-btn { top: 15px; left: 15px; background: #cbd5e1; }
-        #sound-btn { top: 75px; left: 15px; background: #fcd34d; }
 
         /* =========================================
-           5. 클릭 가능한 3D 주사위 트리거
+           5. 심플하고 고급스러운 중앙 3D 주사위
            ========================================= */
-        .dice-trigger-wrapper {
-            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-            display: flex; flex-direction: column; align-items: center; z-index: 100;
+        #center-dice-wrapper {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            display: flex; flex-direction: column; align-items: center; z-index: 150;
+            transition: opacity 0.4s ease, transform 0.4s ease;
         }
-        .dice-trigger-text {
-            background: rgba(255,255,255,0.8); padding: 5px 15px; border-radius: 15px;
-            font-size: 1rem; color: #1e293b; margin-bottom: 10px; font-weight: bold;
-            animation: bounceText 1.5s infinite;
+        .dice-instruction {
+            background: rgba(255,255,255,0.9); padding: 8px 20px; border-radius: 20px;
+            font-size: 1.2rem; color: #1e293b; margin-bottom: 20px; font-weight: bold;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            animation: floatText 2s infinite ease-in-out;
         }
-        @keyframes bounceText {
+        @keyframes floatText {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-5px); }
+            50% { transform: translateY(-8px); }
         }
-        .dice-trigger {
-            width: 80px; height: 80px; background: #ffffff; border-radius: 20px;
-            box-shadow: 
-                8px 8px 16px rgba(0, 0, 0, 0.15),
-                -8px -8px 16px rgba(255, 255, 255, 0.8),
-                inset 4px 4px 10px rgba(255, 255, 255, 0.5),
-                inset -4px -4px 10px rgba(0, 0, 0, 0.1);
-            display: flex; align-items: center; justify-content: center;
-            font-size: 3.5rem; cursor: pointer; transition: transform 0.1s;
-        }
-        .dice-trigger:active { transform: scale(0.9); }
 
-        #dice-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.4); backdrop-filter: blur(3px);
-            display: none; justify-content: center; align-items: center; z-index: 1500;
-        }
-        #dice-container { width: 120px; height: 120px; perspective: 800px; }
+        #dice-container { width: 110px; height: 110px; perspective: 800px; cursor: pointer; }
         .dice-3d {
             width: 100%; height: 100%; position: relative; transform-style: preserve-3d;
-            transform: translateZ(-60px); 
+            transform: translateZ(-55px) rotateX(-15deg) rotateY(-15deg); /* 살짝 비스듬히 입체감 */
+            transition: transform 0.1s;
         }
-        .dice-face {
-            position: absolute; width: 120px; height: 120px; background: white; border: 4px solid #f1f5f9;
-            border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 4.5rem; font-weight: bold; color: #1e293b;
-            box-shadow: inset 0 0 20px rgba(0,0,0,0.1), 0 0 15px rgba(0,0,0,0.2);
-        }
+        #dice-container:active .dice-3d { transform: translateZ(-55px) rotateX(-15deg) rotateY(-15deg) scale(0.9); }
         
+        .dice-face {
+            position: absolute; width: 110px; height: 110px; background: white; border: 4px solid #f8fafc;
+            border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 4rem; font-weight: bold; color: #1e293b;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.1), 0 0 10px rgba(0,0,0,0.15);
+        }
         .dice-face u { text-decoration-thickness: 4px; text-underline-offset: 6px; text-decoration-color: #ef4444; }
         
-        .front  { transform: rotateY(  0deg) translateZ(60px); }
-        .back   { transform: rotateY(180deg) translateZ(60px); }
-        .right  { transform: rotateY( 90deg) translateZ(60px); }
-        .left   { transform: rotateY(-90deg) translateZ(60px); }
-        .top    { transform: rotateX( 90deg) translateZ(60px); }
-        .bottom { transform: rotateX(-90deg) translateZ(60px); }
+        .front  { transform: rotateY(  0deg) translateZ(55px); }
+        .back   { transform: rotateY(180deg) translateZ(55px); }
+        .right  { transform: rotateY( 90deg) translateZ(55px); }
+        .left   { transform: rotateY(-90deg) translateZ(55px); }
+        .top    { transform: rotateX( 90deg) translateZ(55px); }
+        .bottom { transform: rotateX(-90deg) translateZ(55px); }
         
-        .rolling-fast { animation: rollFast 0.5s linear infinite; }
+        .rolling-fast { animation: rollFast 0.6s linear infinite; }
         @keyframes rollFast {
-            0% { transform: translateZ(-60px) rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
-            100% { transform: translateZ(-60px) rotateX(360deg) rotateY(720deg) rotateZ(180deg); }
+            0% { transform: translateZ(-55px) rotateX(0deg) rotateY(0deg); }
+            100% { transform: translateZ(-55px) rotateX(360deg) rotateY(720deg); }
         }
 
         /* =========================================
-           6. 문제 팝업 및 패스/확인 버튼 
+           6. 문제 팝업 및 패스/확인 버튼 (중앙 정렬)
            ========================================= */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6);
@@ -233,7 +232,6 @@
 
         #question-text { font-size: 1.8rem; margin-bottom: 20px; color: #0f172a; word-break: keep-all; line-height: 1.3; font-weight: bold;}
         
-        /* 중앙 정렬 완벽 반영 */
         #normal-input-area { display: flex; flex-direction: column; align-items: center; width: 100%; }
         
         .input-wrapper { display: flex; justify-content: center; width: 100%; margin-bottom: 15px; }
@@ -245,10 +243,7 @@
         }
         #answer-input:focus { border: 2px solid #38bdf8; background: #ffffff; }
 
-        .numpad {
-            display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 100%; max-width: 280px; 
-            margin: 0 auto 20px auto; /* 중앙 정렬 */
-        }
+        .numpad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 100%; max-width: 280px; margin: 0 auto 20px auto; }
         .num-btn {
             padding: 12px 0; font-size: 1.5rem; background: #e2e8f0; border-radius: 12px; color: #1e293b; font-weight: bold;
             box-shadow: 3px 3px 6px rgba(148, 163, 184, 0.4), -3px -3px 6px #ffffff, inset 1px 1px 3px rgba(255,255,255,0.8);
@@ -267,40 +262,31 @@
         #open-ended-btn { display: none; width: 100%; padding: 15px; font-size: 1.5rem; background: #8b5cf6; margin-top: 10px; }
 
         /* =========================================
-           7. 교사 대시보드 (버튼/글자 크기 축소 반영)
+           7. 교사 대시보드 (디자인 개선 & 크기 축소)
            ========================================= */
-        #admin-modal .clay-modal-box { width: 95%; max-width: 700px; height: 85vh; max-height: 750px; padding: 25px; }
-        .admin-header h2 { margin: 0 0 5px 0; color: #0369a1; font-size: 1.8rem; }
-        .admin-header p { margin: 0 0 15px 0; font-size: 0.95rem; color: #475569; background:#f1f5f9; padding:10px; border-radius: 10px; line-height: 1.3;}
+        #admin-modal .clay-modal-box { width: 95%; max-width: 650px; height: 85vh; max-height: 700px; padding: 20px; }
+        .admin-header h2 { margin: 0 0 5px 0; color: #0369a1; font-size: 1.6rem; }
+        .admin-header p { margin: 0 0 10px 0; font-size: 0.95rem; color: #475569; background:#f1f5f9; padding:8px; border-radius: 10px; line-height: 1.3;}
 
-        .q-list { 
-            flex: 1; overflow-y: auto; width: 100%; text-align: left; margin-bottom: 15px; 
-            padding-right: 5px; display: flex; flex-direction: column; gap: 12px;
-        }
-        .q-item { 
-            background: #ffffff; padding: 12px; border-radius: 15px; border: 2px solid #e2e8f0;
-            display: flex; align-items: center; gap: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-        }
-        .q-item-inputs { flex: 1; display: flex; flex-direction: column; gap: 8px; }
-        .q-item-row { display: flex; gap: 8px; }
+        .q-list { flex: 1; overflow-y: auto; width: 100%; text-align: left; margin-bottom: 15px; padding-right: 5px; display: flex; flex-direction: column; gap: 10px; }
+        .q-item { background: #ffffff; padding: 10px; border-radius: 12px; border: 2px solid #e2e8f0; display: flex; align-items: center; gap: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+        .q-item-inputs { flex: 1; display: flex; flex-direction: column; gap: 6px; }
+        .q-item-row { display: flex; gap: 6px; }
         
-        /* 칸 번호 입력창 폰트 사이즈 줄임 */
-        .space-input { width: 60px; text-align: center; color: #b45309; font-weight: bold; background: #fef3c7 !important; border-color: #fde68a !important; font-size: 1.1rem !important; }
-        .q-item input { 
-            width: 100%; padding: 10px 12px; font-family: 'Jua'; font-size: 1.1rem;
-            background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; outline: none; box-sizing: border-box;
-        }
+        /* 칸 번호 크기 대폭 축소 */
+        .space-input { width: 45px !important; flex: 0 0 45px; text-align: center; color: #b45309; font-weight: bold; background: #fef3c7 !important; border-color: #fde68a !important; font-size: 1.1rem !important; padding: 8px 4px !important; }
+        .q-item input { width: 100%; padding: 8px 10px; font-family: 'Jua'; font-size: 1rem; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; outline: none; box-sizing: border-box; }
         .q-item input:focus { border-color: #38bdf8; background: #fff;}
-        .delete-btn { background: #ef4444; width: 45px; height: 45px; border-radius: 10px; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; padding: 0; }
+        .delete-btn { background: #ef4444; width: 40px; height: 40px; border-radius: 10px; font-size: 1.1rem; display: flex; align-items: center; justify-content: center; padding: 0; }
 
-        /* 대시보드 하단 버튼 크기 줄임 */
+        /* 하단 버튼 아담하게 */
         .admin-controls { display: flex; gap: 10px; width: 100%; justify-content: center; }
         .admin-controls .clay-box { flex: 1; max-width: 100px; padding: 10px 0; font-size: 1.1rem; }
         .btn-add { background: #8b5cf6; }
         .btn-save { background: #10b981; }
         .btn-close { background: #64748b; }
 
-        #feedback-overlay { position: fixed; top:0; left:0; width:100%; height:100%; display:none; justify-content:center; align-items:center; z-index: 2000; font-size: 7rem; font-weight: bold; pointer-events: none; text-align: center; }
+        #feedback-overlay { position: fixed; top:0; left:0; width:100%; height:100%; display:none; justify-content:center; align-items:center; z-index: 2000; font-size: 6rem; font-weight: bold; pointer-events: none; text-align: center; }
         .correct-text { color: #10b981; text-shadow: 0 0 30px white, 2px 2px 5px rgba(0,0,0,0.2); }
         .wrong-text { color: #ef4444; text-shadow: 0 0 30px white, 2px 2px 5px rgba(0,0,0,0.2); }
         @keyframes popIn { 0% { transform: scale(0.3); opacity: 0; } 60% { transform: scale(1.1); opacity: 1; } 100% { transform: scale(1); opacity: 1; } }
@@ -313,17 +299,20 @@
 <div id="app">
     <button type="button" id="admin-btn" class="clay-btn-action clay-box" style="background: white; border:none;" onclick="openAdmin()">⚙️</button>
     <button type="button" id="home-btn" class="clay-box clay-btn-action float-btn" onclick="goHome()" style="display:none; border:none;">🏠</button>
-    <button type="button" id="sound-btn" class="clay-box clay-btn-action float-btn" onclick="toggleSound()" style="border:none;">🔊</button>
 
     <div id="setup-screen" class="no-scrollbar">
         <h1>✨ 말랑말랑 보드게임</h1>
         
         <div class="setting-row">
             <div class="setting-group">
-                <label>플레이어 모드:</label>
+                <label>참여 인원:</label>
                 <select id="sel-players" onchange="updateCharSelectUI()">
-                    <option value="1">1인용 (혼자 모험)</option>
-                    <option value="2" selected>2인용 (친구와 대결)</option>
+                    <option value="1">1인 (개인전)</option>
+                    <option value="2" selected>2인 (대결)</option>
+                    <option value="3">3인 (모둠전)</option>
+                    <option value="4">4인 (모둠전)</option>
+                    <option value="5">5인 (모둠전)</option>
+                    <option value="6">6인 (모둠전)</option>
                 </select>
             </div>
             <div class="setting-group">
@@ -336,17 +325,17 @@
             </div>
         </div>
 
-        <div class="setting-row">
-            <div class="setting-group">
-                <label>1P 캐릭터:</label>
+        <div class="char-grid-row">
+            <div class="setting-group" id="grp-p1">
+                <label>1P:</label>
                 <div class="char-select-container" id="p1-chars">
                     <div class="char-option selected-1p" onclick="selectChar(1, '🐰')">🐰</div>
                     <div class="char-option" onclick="selectChar(1, '🐶')">🐶</div>
                     <div class="char-option" onclick="selectChar(1, '🦊')">🦊</div>
                 </div>
             </div>
-            <div class="setting-group" id="p2-char-group">
-                <label>2P 캐릭터:</label>
+            <div class="setting-group" id="grp-p2">
+                <label>2P:</label>
                 <div class="char-select-container" id="p2-chars">
                     <div class="char-option" onclick="selectChar(2, '🐢')">🐢</div>
                     <div class="char-option selected-2p" onclick="selectChar(2, '🐱')">🐱</div>
@@ -354,14 +343,55 @@
                 </div>
             </div>
         </div>
+        <div class="char-grid-row" id="row-34" style="display: none;">
+            <div class="setting-group" id="grp-p3">
+                <label>3P:</label>
+                <div class="char-select-container" id="p3-chars">
+                    <div class="char-option selected-3p" onclick="selectChar(3, '🐼')">🐼</div>
+                    <div class="char-option" onclick="selectChar(3, '🐨')">🐨</div>
+                </div>
+            </div>
+            <div class="setting-group" id="grp-p4">
+                <label>4P:</label>
+                <div class="char-select-container" id="p4-chars">
+                    <div class="char-option selected-4p" onclick="selectChar(4, '🐸')">🐸</div>
+                    <div class="char-option" onclick="selectChar(4, '🐵')">🐵</div>
+                </div>
+            </div>
+        </div>
+        <div class="char-grid-row" id="row-56" style="display: none;">
+            <div class="setting-group" id="grp-p5">
+                <label>5P:</label>
+                <div class="char-select-container" id="p5-chars">
+                    <div class="char-option selected-5p" onclick="selectChar(5, '🐷')">🐷</div>
+                    <div class="char-option" onclick="selectChar(5, '🐭')">🐭</div>
+                </div>
+            </div>
+            <div class="setting-group" id="grp-p6">
+                <label>6P:</label>
+                <div class="char-select-container" id="p6-chars">
+                    <div class="char-option selected-6p" onclick="selectChar(6, '🦄')">🦄</div>
+                    <div class="char-option" onclick="selectChar(6, '🦁')">🦁</div>
+                </div>
+            </div>
+        </div>
 
-        <div class="setting-group">
-            <label>문제 풀이 시간:</label>
-            <select id="sel-timer">
-                <option value="0">무제한 (여유롭게)</option>
-                <option value="15">15초 (스피드)</option>
-                <option value="30" selected>30초 (기본)</option>
-            </select>
+        <div class="setting-row">
+            <div class="setting-group">
+                <label>시간 제한:</label>
+                <select id="sel-timer">
+                    <option value="0">무제한 (여유롭게)</option>
+                    <option value="15">15초 (스피드)</option>
+                    <option value="30" selected>30초 (기본)</option>
+                </select>
+            </div>
+            <div class="setting-group">
+                <label>게임 사운드:</label>
+                <select id="sel-sound">
+                    <option value="on" selected>켜기 🔊</option>
+                    <option value="off">끄기 🔇</option>
+                </select>
+            </div>
         </div>
 
         <button type="button" class="clay-box clay-btn-action start-btn" onclick="startGame()">🚀 모험 시작하기!</button>
@@ -373,25 +403,25 @@
             <svg id="bridges"></svg>
             <div id="islands-wrapper"></div>
             <div id="player1" class="player-token">🐰</div>
-            <div id="player2" class="player-token">🐱</div>
+            <div id="player2" class="player-token" style="display:none;">🐱</div>
+            <div id="player3" class="player-token" style="display:none;">🐼</div>
+            <div id="player4" class="player-token" style="display:none;">🐸</div>
+            <div id="player5" class="player-token" style="display:none;">🐷</div>
+            <div id="player6" class="player-token" style="display:none;">🦄</div>
         </div>
 
-        <div class="dice-trigger-wrapper" id="dice-trigger-wrapper">
-            <div class="dice-trigger-text">👇 주사위를 터치하세요!</div>
-            <div class="dice-trigger" onclick="rollDiceAction()">🎲</div>
-        </div>
-    </div>
-</div>
-
-<div id="dice-overlay">
-    <div id="dice-container">
-        <div class="dice-3d" id="dice">
-            <div class="dice-face front">1</div>
-            <div class="dice-face back"><u>6</u></div>
-            <div class="dice-face right">3</div>
-            <div class="dice-face left">4</div>
-            <div class="dice-face top">2</div>
-            <div class="dice-face bottom">5</div>
+        <div id="center-dice-wrapper">
+            <div class="dice-instruction">👇 터치해서 주사위를 굴리세요!</div>
+            <div id="dice-container" onclick="rollDiceAction()">
+                <div class="dice-3d" id="dice">
+                    <div class="dice-face front">1</div>
+                    <div class="dice-face back"><u>6</u></div>
+                    <div class="dice-face right">3</div>
+                    <div class="dice-face left">4</div>
+                    <div class="dice-face top">2</div>
+                    <div class="dice-face bottom">5</div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -434,13 +464,13 @@
     <div class="clay-modal-box">
         <div class="admin-header">
             <h2>⚙️ 문제 출제 대시보드</h2>
-            <p>💡 <b>칸 번호</b>를 입력하면 해당 칸에 도착 시 문제가 출제됩니다.<br>(지정되지 않은 말판은 랜덤 수학 문제가 나옵니다.)</p>
+            <p>💡 <b>칸 번호</b> 지정. (미지정 칸은 수학 문제 출제)</p>
         </div>
         
         <div class="q-list no-scrollbar" id="admin-q-list"></div>
 
         <div class="admin-controls">
-            <button type="button" class="clay-box clay-btn-action btn-add" onclick="addQuestionField()">+ 추가</button>
+            <button type="button" class="clay-box clay-btn-action btn-add" onclick="addQuestionField()">+ 1개 추가</button>
             <button type="button" class="clay-box clay-btn-action btn-save" onclick="saveAdmin()">저장</button>
             <button type="button" class="clay-box clay-btn-action btn-close" onclick="closeAdmin()">닫기</button>
         </div>
@@ -460,11 +490,6 @@
     function initAudio() {
         if (!audioCtx) audioCtx = new AudioContext();
         if (audioCtx.state === 'suspended') audioCtx.resume();
-    }
-
-    function toggleSound() {
-        soundEnabled = !soundEnabled;
-        document.getElementById('sound-btn').innerText = soundEnabled ? '🔊' : '🔇';
     }
 
     function playTone(freq, type, duration, vol=0.1) {
@@ -489,10 +514,7 @@
         }, 80);
     }
 
-    function playJumpSound() { 
-        if (!soundEnabled || !audioCtx) return;
-        playTone(500, 'sine', 0.15, 0.1);
-    }
+    function playJumpSound() { playTone(500, 'sine', 0.15, 0.1); }
 
     function playCorrectSound() { 
         if(!soundEnabled) return;
@@ -508,26 +530,27 @@
     }
 
     /* =========================================
-       2. 상태 변수 및 초기화
+       2. 상태 변수 및 배열 (6인용 확장)
        ========================================= */
     let isPlaying = false;
     let totalSpaces = 15;
     let playerCount = 2;
     let timerLimit = 30;
-    
-    let p1Char = '🐰';
-    let p2Char = '🐱';
 
+    // 1~6P 관리 배열
     let players = [
-        { el: document.getElementById('player1'), pos: 0, prevPos: 0, color: 'var(--clay-p1)', name: '1P' },
-        { el: document.getElementById('player2'), pos: 0, prevPos: 0, color: 'var(--clay-p2)', name: '2P' }
+        { el: document.getElementById('player1'), pos: 0, prevPos: 0, color: '#be123c', name: '1P', char: '🐰' },
+        { el: document.getElementById('player2'), pos: 0, prevPos: 0, color: '#1d4ed8', name: '2P', char: '🐱' },
+        { el: document.getElementById('player3'), pos: 0, prevPos: 0, color: '#047857', name: '3P', char: '🐼' },
+        { el: document.getElementById('player4'), pos: 0, prevPos: 0, color: '#b45309', name: '4P', char: '🐸' },
+        { el: document.getElementById('player5'), pos: 0, prevPos: 0, color: '#6d28d9', name: '5P', char: '🐷' },
+        { el: document.getElementById('player6'), pos: 0, prevPos: 0, color: '#be185d', name: '6P', char: '🦄' }
     ];
     let currentPlayerIdx = 0;
     
     let islandPositions = [];
     let customQuestionsMap = {}; 
     let currentQ = null;
-    
     let isMoving = false;
     let timerInterval = null;
 
@@ -536,46 +559,56 @@
     const boardContainer = document.getElementById('board-container');
     const turnIndicator = document.getElementById('turn-indicator');
     const homeBtn = document.getElementById('home-btn');
+    const centerDiceWrapper = document.getElementById('center-dice-wrapper');
     const questionModal = document.getElementById('question-modal');
     const answerInput = document.getElementById('answer-input');
     const timerBar = document.getElementById('timer-bar');
 
+    /* 캐릭터 선택 UI (1~6명) */
     function updateCharSelectUI() {
-        const mode = document.getElementById('sel-players').value;
-        document.getElementById('p2-char-group').style.display = mode === '1' ? 'none' : 'flex';
+        const count = parseInt(document.getElementById('sel-players').value);
+        document.getElementById('grp-p2').style.visibility = count >= 2 ? 'visible' : 'hidden';
+        document.getElementById('row-34').style.display = count >= 3 ? 'grid' : 'none';
+        document.getElementById('grp-p4').style.visibility = count >= 4 ? 'visible' : 'hidden';
+        document.getElementById('row-56').style.display = count >= 5 ? 'grid' : 'none';
+        document.getElementById('grp-p6').style.visibility = count >= 6 ? 'visible' : 'hidden';
     }
     
-    function selectChar(playerNum, char) {
-        let container = document.getElementById(playerNum === 1 ? 'p1-chars' : 'p2-chars');
+    function selectChar(pNum, char) {
+        let container = document.getElementById(`p${pNum}-chars`);
+        if(!container) return;
         let opts = container.getElementsByClassName('char-option');
         for(let opt of opts) {
-            opt.classList.remove(`selected-${playerNum}p`);
-            if(opt.innerText === char) opt.classList.add(`selected-${playerNum}p`);
+            opt.classList.remove(`selected-${pNum}p`);
+            if(opt.innerText === char) opt.classList.add(`selected-${pNum}p`);
         }
-        if(playerNum === 1) p1Char = char;
-        else p2Char = char;
+        players[pNum-1].char = char;
     }
 
     function startGame() {
         initAudio(); 
+        soundEnabled = document.getElementById('sel-sound').value === 'on';
         playerCount = parseInt(document.getElementById('sel-players').value);
         totalSpaces = parseInt(document.getElementById('sel-board-size').value);
         timerLimit = parseInt(document.getElementById('sel-timer').value);
         
-        players[0].el.innerText = p1Char;
-        players[1].el.innerText = p2Char;
-
         setupScreen.style.display = 'none';
         gameScreen.style.display = 'flex';
         homeBtn.style.display = 'flex';
         isPlaying = true;
 
-        players[0].pos = 0; players[0].prevPos = 0; players[0].el.style.display = 'flex';
-        players[1].pos = 0; players[1].prevPos = 0; players[1].el.style.display = playerCount === 2 ? 'flex' : 'none';
+        for(let i=0; i<6; i++) {
+            players[i].pos = 0;
+            players[i].prevPos = 0;
+            players[i].el.innerText = players[i].char;
+            players[i].el.style.display = i < playerCount ? 'flex' : 'none';
+        }
         
         currentPlayerIdx = 0;
         updateTurnUI();
         generateBoard();
+        centerDiceWrapper.style.opacity = '1';
+        centerDiceWrapper.style.pointerEvents = 'auto';
     }
 
     function goHome() {
@@ -600,21 +633,17 @@
 
         const width = boardContainer.clientWidth;
         const height = boardContainer.clientHeight;
-        
         const cols = width > 600 ? 5 : 4; 
         const rows = Math.ceil(totalSpaces / cols);
         
-        let svgPath = '';
-        let dPath = '';
+        let svgPath = ''; let dPath = '';
 
         for (let i = 0; i < totalSpaces; i++) {
             const row = Math.floor(i / cols);
             const isEvenRow = (row % 2 === 0);
             const col = isEvenRow ? (i % cols) : ((cols - 1) - (i % cols));
 
-            const paddingX = 12; 
-            const paddingY = 15; 
-            
+            const paddingX = 12; const paddingY = 15; 
             const xPct = paddingX + (col * ((100 - paddingX * 2) / (cols - 1)));
             const yPct = paddingY + (row * ((100 - paddingY * 2) / (rows > 1 ? rows - 1 : 1)));
 
@@ -632,13 +661,10 @@
 
             islandsWrapper.appendChild(island);
 
-            if (i === 0) {
-                dPath += `M ${x} ${y} `;
-            } else {
-                const pX = islandPositions[i - 1].x; 
-                const pY = islandPositions[i - 1].y;
-                const cx = (pX + x) / 2;
-                const cy = (pY + y) / 2 + (isEvenRow ? 40 : -40); 
+            if (i === 0) { dPath += `M ${x} ${y} `; } 
+            else {
+                const pX = islandPositions[i - 1].x; const pY = islandPositions[i - 1].y;
+                const cx = (pX + x) / 2; const cy = (pY + y) / 2 + (isEvenRow ? 40 : -40); 
                 dPath += `Q ${cx} ${cy}, ${x} ${y} `;
             }
         }
@@ -647,71 +673,89 @@
         svgPath += `<path d="${dPath}" fill="none" stroke="#f59e0b" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>`;
         bridgesSvg.innerHTML = svgPath;
         
-        updatePlayerPosition(0, false);
-        if(playerCount === 2) updatePlayerPosition(1, false);
+        updateAllPlayerPositions(false);
     }
 
-    function updatePlayerPosition(pIdx, animate = true) {
-        let p = players[pIdx];
-        if (p.pos >= totalSpaces) p.pos = totalSpaces - 1;
-        const pos = islandPositions[p.pos];
-        
-        if (animate) {
-            p.el.style.transition = 'left 0.4s ease, top 0.4s ease, transform 0.3s';
-            p.el.classList.add('jump-anim');
-            playJumpSound(); 
-            setTimeout(() => p.el.classList.remove('jump-anim'), 400);
-        } else {
-            p.el.style.transition = 'none';
+    // 겹침 방지 알고리즘 (최대 6명 클러스터링)
+    function getOffset(index, total) {
+        if (total === 1) return { x: 0, y: -10 };
+        if (total === 2) return index === 0 ? { x: -15, y: -10 } : { x: 15, y: -10 };
+        if (total === 3) {
+            if (index === 0) return { x: 0, y: -20 };
+            if (index === 1) return { x: -18, y: 5 };
+            return { x: 18, y: 5 };
         }
-
-        let offsetX = -50; let offsetY = -60; 
-        if (playerCount === 2 && players[0].pos === players[1].pos && p.pos !== 0) {
-            if (pIdx === 0) { offsetX = -80; offsetY = -70; } 
-            if (pIdx === 1) { offsetX = -20; offsetY = -40; } 
-        } else if(playerCount === 2 && players[0].pos !== players[1].pos){
-             let otherIdx = pIdx === 0 ? 1 : 0;
-             players[otherIdx].el.style.transform = `translate(-50%, -60%) scale(1)`;
+        if (total === 4) {
+            if (index === 0) return { x: -18, y: -20 };
+            if (index === 1) return { x: 18, y: -20 };
+            if (index === 2) return { x: -18, y: 5 };
+            return { x: 18, y: 5 };
         }
+        // 5~6명 처리 (2줄)
+        const row = index < 3 ? 0 : 1;
+        const col = index < 3 ? index : index - 3;
+        const y = row === 0 ? -25 : 8;
+        const rowCount = row === 0 ? 3 : (total - 3);
+        let x = 0;
+        if (rowCount === 3) x = (col - 1) * 22; 
+        else if (rowCount === 2) x = col === 0 ? -15 : 15;
+        else x = 0;
+        return { x, y };
+    }
 
-        p.el.style.left = `${pos.x}px`;
-        p.el.style.top = `${pos.y}px`;
-        p.el.style.transform = `translate(${offsetX}%, ${offsetY}%) scale(1)`;
+    function updateAllPlayerPositions(animate = true) {
+        // 각 칸별 인원 파악
+        for (let i = 0; i < totalSpaces; i++) {
+            let occupants = [];
+            for(let j=0; j<playerCount; j++) {
+                if(players[j].pos === i) occupants.push(j);
+            }
+            // 해당 칸에 있는 말들을 분산 배치
+            occupants.forEach((pIdx, arrIdx) => {
+                let p = players[pIdx];
+                const pos = islandPositions[p.pos];
+                if(animate) {
+                    p.el.style.transition = 'left 0.4s ease, top 0.4s ease, transform 0.3s';
+                    p.el.classList.add('jump-anim');
+                    setTimeout(() => p.el.classList.remove('jump-anim'), 400);
+                } else {
+                    p.el.style.transition = 'none';
+                }
+                
+                let offset = (p.pos === 0) ? {x:-20 + Math.random()*40, y:-20 + Math.random()*40} : getOffset(arrIdx, occupants.length);
+                
+                p.el.style.left = `${pos.x}px`;
+                p.el.style.top = `${pos.y}px`;
+                p.el.style.transform = `translate(calc(-50% + ${offset.x}px), calc(-50% + ${offset.y}px)) scale(1)`;
+            });
+        }
+        if(animate) playJumpSound();
     }
 
     function updateTurnUI() {
-        if(playerCount === 1) { turnIndicator.style.display = 'none'; return; }
-        turnIndicator.style.display = 'block';
-        if (currentPlayerIdx === 0) {
-            turnIndicator.innerHTML = `🔴 1P (${p1Char}) 차례입니다!`;
-            turnIndicator.style.color = '#be123c';
-        } else {
-            turnIndicator.innerHTML = `🔵 2P (${p2Char}) 차례입니다!`;
-            turnIndicator.style.color = '#1d4ed8';
-        }
+        const p = players[currentPlayerIdx];
+        turnIndicator.innerHTML = `${p.name} (${p.char}) 차례입니다!`;
+        turnIndicator.style.color = p.color;
     }
 
     /* =========================================
-       4. 클릭형 3D 주사위 애니메이션 (6 회전 수정)
+       4. 클릭형 중앙 3D 주사위 시퀀스 로직
        ========================================= */
     function rollDiceAction() {
         if (isMoving) return;
         isMoving = true;
         initAudio(); 
 
-        const triggerWrapper = document.getElementById('dice-trigger-wrapper');
-        const overlay = document.getElementById('dice-overlay');
         const diceEl = document.getElementById('dice');
         
-        triggerWrapper.style.opacity = '0.3'; 
-        overlay.style.display = 'flex';
+        // 주사위 누르면 지시문 숨김
+        document.querySelector('.dice-instruction').style.opacity = '0';
         
         diceEl.className = 'dice-3d rolling-fast';
         playRollSound();
 
         const result = Math.floor(Math.random() * 6) + 1;
         
-        // 6이 거꾸로(9처럼) 보이지 않도록 y축 180도 회전으로 개선
         const rotations = {
             1: { x: 0, y: 0 }, 2: { x: -90, y: 0 }, 3: { x: 0, y: -90 },
             4: { x: 0, y: 90 }, 5: { x: 90, y: 0 }, 6: { x: 0, y: 180 } 
@@ -723,14 +767,15 @@
             const finalY = rotations[result].y + 720;
             
             diceEl.style.transition = 'transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
-            diceEl.style.transform = `translateZ(-60px) rotateX(${finalX}deg) rotateY(${finalY}deg)`;
+            diceEl.style.transform = `translateZ(-55px) rotateX(${finalX}deg) rotateY(${finalY}deg)`;
             
+            // 숫자 확인 후 주사위 페이드아웃 -> 이동
             setTimeout(() => {
-                overlay.style.display = 'none';
-                triggerWrapper.style.opacity = '1';
+                centerDiceWrapper.style.opacity = '0';
+                centerDiceWrapper.style.pointerEvents = 'none';
                 diceEl.style.transition = 'none'; 
                 movePlayerStepByStep(result);
-            }, 1000);
+            }, 1200);
         }, 1200);
     }
 
@@ -743,7 +788,7 @@
         const moveInterval = setInterval(() => {
             if (p.pos < targetPos) {
                 p.pos++;
-                updatePlayerPosition(currentPlayerIdx, true);
+                updateAllPlayerPositions(true); // 전체 재배치로 겹침 자연스럽게 해소
             } else {
                 clearInterval(moveInterval);
                 setTimeout(() => {
@@ -783,7 +828,7 @@
             normalArea.style.display = 'none';
             openBtn.style.display = 'block';
         } else {
-            normalArea.style.display = 'flex'; // 중앙 정렬된 레이아웃 복구
+            normalArea.style.display = 'flex'; 
             openBtn.style.display = 'none';
         }
 
@@ -859,18 +904,21 @@
         
         setTimeout(() => {
             p.pos = p.prevPos; 
-            updatePlayerPosition(currentPlayerIdx, true); 
+            updateAllPlayerPositions(true); // 뒤로 갈때도 전체 정렬
             nextTurn();
         }, 1500);
     }
 
     function nextTurn() {
         setTimeout(() => {
-            if (playerCount === 2) {
-                currentPlayerIdx = currentPlayerIdx === 0 ? 1 : 0;
-                updateTurnUI();
-            }
-            isMoving = false; // 주사위 락 해제
+            currentPlayerIdx = (currentPlayerIdx + 1) % playerCount;
+            updateTurnUI();
+            
+            // 주사위 다시 등장
+            document.querySelector('.dice-instruction').style.opacity = '1';
+            centerDiceWrapper.style.opacity = '1';
+            centerDiceWrapper.style.pointerEvents = 'auto';
+            isMoving = false; 
         }, 1500);
     }
 
@@ -890,7 +938,7 @@
        6. 교사 대시보드
        ========================================= */
     function openAdmin() {
-        if(isMoving) return; // 말이 이동 중일 때 버튼 오작동 방지
+        if(isMoving) return; 
         document.getElementById('admin-modal').style.display = 'flex';
         renderAdminQuestions();
     }
@@ -958,7 +1006,7 @@
     window.addEventListener('resize', () => {
         clearTimeout(resizeTimer);
         resizeTimer = setTimeout(() => {
-            if (isPlaying) generateBoard();
+            if (isPlaying) updateAllPlayerPositions(false); // 창크기 변할때 즉시 재정렬
         }, 100);
     });
 
