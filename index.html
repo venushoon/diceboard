@@ -10,8 +10,8 @@
            1. 프리미엄 클레이모피즘 색상 & 변수
            ========================================= */
         :root {
-            --bg-ocean: #f0fdf4; /* 부드러운 민트/그린톤 배경 */
-            --clay-island: #fef08a; /* 폭신한 징검다리 */
+            --bg-ocean: #f0fdf4; 
+            --clay-island: #fef08a; 
             --clay-island-dark: #eab308;
             --clay-island-light: #fef9c3;
             
@@ -32,10 +32,9 @@
             font-family: 'Jua', sans-serif;
             color: var(--text-color);
             touch-action: manipulation;
-            overflow: hidden; 
+            overflow: hidden; /* 전체 스크롤 완벽 차단 */
         }
 
-        /* 텍스트 입력창 제외하고 드래그 방지 */
         body { user-select: none; -webkit-user-select: none; }
         input { user-select: auto; -webkit-user-select: auto; }
 
@@ -43,16 +42,16 @@
         .no-scrollbar::-webkit-scrollbar { display: none; }
 
         /* =========================================
-           2. 향상된 찰흙 질감 (입체감 극대화)
+           2. 향상된 찰흙 질감
            ========================================= */
         .clay-box {
-            border-radius: 25px;
+            border-radius: 20px;
             background: var(--clay-btn);
             box-shadow: 
-                8px 8px 16px rgba(0, 0, 0, 0.15),
-                -8px -8px 16px rgba(255, 255, 255, 0.8),
-                inset 4px 4px 10px rgba(255, 255, 255, 0.5),
-                inset -4px -4px 10px rgba(0, 0, 0, 0.1);
+                6px 6px 12px rgba(0, 0, 0, 0.1),
+                -6px -6px 12px rgba(255, 255, 255, 0.8),
+                inset 3px 3px 8px rgba(255, 255, 255, 0.5),
+                inset -3px -3px 8px rgba(0, 0, 0, 0.1);
             color: white;
             transition: all 0.2s ease;
             text-align: center;
@@ -63,89 +62,86 @@
         .clay-btn-action { cursor: pointer; }
         .clay-btn-action:hover { filter: brightness(1.05); }
         .clay-btn-action:active {
-            transform: scale(0.93);
+            transform: scale(0.95);
             box-shadow: 
-                4px 4px 8px rgba(0, 0, 0, 0.1),
-                -4px -4px 8px rgba(255, 255, 255, 0.9),
-                inset 6px 6px 15px rgba(0, 0, 0, 0.15),
-                inset -6px -6px 15px rgba(255, 255, 255, 0.6);
+                2px 2px 5px rgba(0, 0, 0, 0.1),
+                -2px -2px 5px rgba(255, 255, 255, 0.9),
+                inset 4px 4px 10px rgba(0, 0, 0, 0.15),
+                inset -4px -4px 10px rgba(255, 255, 255, 0.6);
         }
 
         /* =========================================
-           3. UI 레이아웃 및 시작 화면
+           3. 한 화면에 쏙 들어오는 첫 화면 레이아웃
            ========================================= */
         #app {
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            height: 100vh; padding: 20px; box-sizing: border-box; position: relative;
+            height: 100vh; padding: 15px; box-sizing: border-box; position: relative;
         }
 
         #admin-btn {
-            position: absolute; top: 20px; right: 20px;
-            font-size: 2.5rem; cursor: pointer; opacity: 0.5; transition: all 0.3s;
-            background: white; border-radius: 50%; padding: 10px; box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+            position: absolute; top: 15px; right: 15px;
+            font-size: 2rem; cursor: pointer; opacity: 0.6; transition: all 0.3s;
+            background: white; border-radius: 50%; padding: 8px; box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
+            z-index: 100;
         }
         #admin-btn:hover { opacity: 1; transform: rotate(45deg); }
 
-        h1 { font-size: 3rem; text-shadow: 3px 3px 6px rgba(0,0,0,0.15); margin-bottom: 30px; color: #0369a1; text-align: center; }
+        h1 { font-size: 2.5rem; text-shadow: 2px 2px 5px rgba(0,0,0,0.1); margin: 0 0 20px 0; color: #0369a1; text-align: center; }
 
         #setup-screen {
-            background: rgba(255, 255, 255, 0.65); padding: 40px; border-radius: 40px;
-            width: 90%; max-width: 600px; box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-            backdrop-filter: blur(15px); display: flex; flex-direction: column; gap: 20px;
+            background: rgba(255, 255, 255, 0.65); padding: 25px; border-radius: 30px;
+            width: 100%; max-width: 600px; box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            backdrop-filter: blur(15px); display: flex; flex-direction: column; gap: 15px;
         }
 
-        .setting-row { display: flex; gap: 15px; justify-content: space-between; flex-wrap: wrap;}
-        .setting-group { flex: 1; display: flex; flex-direction: column; gap: 8px; font-size: 1.2rem; min-width: 150px;}
+        .setting-row { display: flex; gap: 10px; justify-content: space-between; }
+        .setting-group { flex: 1; display: flex; flex-direction: column; gap: 5px; font-size: 1.1rem; }
         
         select {
-            font-family: 'Jua', sans-serif; font-size: 1.2rem; padding: 12px; border-radius: 20px;
-            border: 2px solid transparent; outline: none; background: white; box-shadow: inset 3px 3px 6px rgba(0,0,0,0.05);
-            color: #334155; transition: all 0.3s; cursor: pointer;
+            font-family: 'Jua', sans-serif; font-size: 1.1rem; padding: 10px; border-radius: 15px;
+            border: 2px solid transparent; outline: none; background: white; box-shadow: inset 2px 2px 5px rgba(0,0,0,0.05);
+            color: #334155; cursor: pointer; width: 100%;
         }
-        select:focus { border-color: #38bdf8; }
 
-        /* 캐릭터 선택 UI */
-        .char-select-container { display: flex; gap: 10px; justify-content: space-around; background: white; padding: 10px; border-radius: 20px; box-shadow: inset 2px 2px 5px rgba(0,0,0,0.05);}
-        .char-option { font-size: 2rem; padding: 5px; cursor: pointer; border-radius: 15px; transition: all 0.2s; border: 3px solid transparent;}
+        .char-select-container { display: flex; gap: 5px; justify-content: space-around; background: white; padding: 8px; border-radius: 15px; box-shadow: inset 2px 2px 5px rgba(0,0,0,0.05);}
+        .char-option { font-size: 1.8rem; padding: 5px 10px; cursor: pointer; border-radius: 12px; transition: all 0.2s; border: 3px solid transparent;}
         .char-option.selected-1p { border-color: var(--clay-p1); background: #ffe4e6;}
         .char-option.selected-2p { border-color: var(--clay-p2); background: #dbeafe;}
 
-        .start-btn { margin-top: 20px; padding: 20px; font-size: 1.8rem; background: #10b981; letter-spacing: 2px;}
+        .start-btn { margin-top: 10px; padding: 15px; font-size: 1.5rem; background: #10b981; letter-spacing: 1px;}
 
         /* =========================================
-           4. 다이내믹 게임 보드
+           4. 화면에 완벽하게 꽉 차는 게임 보드
            ========================================= */
         #game-screen {
-            display: none; width: 100%; max-width: 1000px; flex-direction: column; align-items: center; flex: 1; position: relative;
+            display: none; width: 100%; height: 100%; flex-direction: column; align-items: center; position: relative;
         }
 
         #turn-indicator {
-            font-size: 1.5rem; padding: 10px 30px; border-radius: 25px; background: white; margin-bottom: 10px;
-            box-shadow: 0 6px 12px rgba(0,0,0,0.1); transition: all 0.3s; z-index: 10;
+            font-size: 1.3rem; padding: 8px 25px; border-radius: 20px; background: white; margin: 10px 0;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1); z-index: 10;
         }
 
-        .board-container { position: relative; width: 100%; flex: 1; margin-bottom: 20px; }
+        /* 말판 컨테이너: 남은 공간을 모두 차지하도록 flex: 1 */
+        .board-container { position: relative; width: 100%; max-width: 1000px; flex: 1; margin-bottom: 90px; } /* 하단 주사위 공간 확보 */
         
-        /* 뱀처럼 굽이치는 길 SVG */
         #bridges { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
         
         .island {
-            position: absolute; width: 65px; height: 65px; border-radius: 50%; background: var(--clay-island);
-            box-shadow: 5px 5px 12px rgba(234, 179, 8, 0.4), -5px -5px 12px rgba(255, 255, 255, 0.9), inset 3px 3px 8px var(--clay-island-light), inset -3px -3px 8px var(--clay-island-dark);
-            z-index: 2; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: #854d0e; font-weight: bold; transform: translate(-50%, -50%);
-            transition: transform 0.3s;
+            position: absolute; width: 60px; height: 60px; border-radius: 50%; background: var(--clay-island);
+            box-shadow: 4px 4px 10px rgba(234, 179, 8, 0.4), -4px -4px 10px rgba(255, 255, 255, 0.9), inset 3px 3px 8px var(--clay-island-light), inset -3px -3px 8px var(--clay-island-dark);
+            z-index: 2; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; color: #854d0e; font-weight: bold; transform: translate(-50%, -50%);
         }
-        .island.start { background: #6ee7b7; color: #065f46; width: 80px; height: 80px; font-size: 1.8rem;}
-        .island.finish { background: #fca5a5; color: #991b1b; width: 80px; height: 80px; font-size: 1.8rem;}
+        .island.start { background: #6ee7b7; color: #065f46; width: 75px; height: 75px; font-size: 1.6rem;}
+        .island.finish { background: #fca5a5; color: #991b1b; width: 75px; height: 75px; font-size: 1.6rem;}
         
-        /* 통통 튀는 플레이어 말 (캐릭터 포함) */
         .player-token {
-            position: absolute; width: 50px; height: 50px; border-radius: 50%; z-index: 10;
+            position: absolute; width: 45px; height: 45px; border-radius: 50%; z-index: 10;
             transform: translate(-50%, -60%); transition: left 0.4s ease-in-out, top 0.4s ease-in-out, transform 0.3s; pointer-events: none;
-            display: flex; align-items: center; justify-content: center; font-size: 1.8rem;
+            display: flex; align-items: center; justify-content: center; font-size: 1.6rem;
         }
-        #player1 { background: var(--clay-p1); box-shadow: 4px 4px 8px rgba(190, 18, 60, 0.5), inset 3px 3px 8px rgba(255,255,255,0.5), inset -3px -3px 8px rgba(0,0,0,0.2); }
-        #player2 { background: var(--clay-p2); box-shadow: 4px 4px 8px rgba(29, 78, 216, 0.5), inset 3px 3px 8px rgba(255,255,255,0.5), inset -3px -3px 8px rgba(0,0,0,0.2); display: none; }
+        #player1 { background: var(--clay-p1); box-shadow: 3px 3px 8px rgba(190, 18, 60, 0.5), inset 2px 2px 6px rgba(255,255,255,0.5), inset -2px -2px 6px rgba(0,0,0,0.2); }
+        #player2 { background: var(--clay-p2); box-shadow: 3px 3px 8px rgba(29, 78, 216, 0.5), inset 2px 2px 6px rgba(255,255,255,0.5), inset -2px -2px 6px rgba(0,0,0,0.2); display: none; }
         
         .jump-anim { animation: jumpArc 0.4s ease-in-out; }
         @keyframes jumpArc { 
@@ -154,27 +150,48 @@
             100% { margin-top: 0; transform: translate(-50%, -60%) scale(1); } 
         }
 
-        .controls { width: 100%; display: flex; justify-content: center; padding: 10px; box-sizing: border-box; z-index: 10; }
-        .dice-btn { padding: 15px 40px; font-size: 1.8rem; background: #a855f7; width: 80%; max-width: 350px;}
-
-        /* 플로팅 버튼들 */
+        /* 플로팅 버튼 (홈, 사운드) */
         .float-btn {
-            position: fixed; width: 60px; height: 60px; border-radius: 50%; font-size: 1.8rem; display: flex; align-items: center; justify-content: center; z-index: 500; box-shadow: 3px 3px 8px rgba(0,0,0,0.15);
+            position: fixed; width: 50px; height: 50px; border-radius: 50%; font-size: 1.5rem; display: flex; align-items: center; justify-content: center; z-index: 500; box-shadow: 2px 2px 6px rgba(0,0,0,0.15);
         }
-        #home-btn { bottom: 20px; left: 20px; background: #cbd5e1; }
-        #sound-btn { bottom: 20px; right: 20px; background: #fcd34d; }
+        #home-btn { top: 15px; left: 15px; background: #cbd5e1; }
+        #sound-btn { top: 75px; left: 15px; background: #fcd34d; }
 
         /* =========================================
-           5. 압도적 액션의 3D 주사위
+           5. 클릭 가능한 3D 주사위 트리거 (핵심)
            ========================================= */
+        .dice-trigger-wrapper {
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+            display: flex; flex-direction: column; align-items: center; z-index: 100;
+        }
+        .dice-trigger-text {
+            background: rgba(255,255,255,0.8); padding: 5px 15px; border-radius: 15px;
+            font-size: 1rem; color: #334155; margin-bottom: 10px; font-weight: bold;
+            animation: bounceText 1.5s infinite;
+        }
+        @keyframes bounceText {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+        .dice-trigger {
+            width: 80px; height: 80px; background: #ffffff; border-radius: 20px;
+            box-shadow: 
+                8px 8px 16px rgba(0, 0, 0, 0.15),
+                -8px -8px 16px rgba(255, 255, 255, 0.8),
+                inset 4px 4px 10px rgba(255, 255, 255, 0.5),
+                inset -4px -4px 10px rgba(0, 0, 0, 0.1);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 3.5rem; cursor: pointer; transition: transform 0.1s;
+        }
+        .dice-trigger:active { transform: scale(0.9); }
+
+        /* 구르는 3D 주사위 오버레이 */
         #dice-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.3); backdrop-filter: blur(3px);
+            background: rgba(0,0,0,0.4); backdrop-filter: blur(3px);
             display: none; justify-content: center; align-items: center; z-index: 1500;
         }
-        #dice-container {
-            width: 120px; height: 120px; perspective: 800px;
-        }
+        #dice-container { width: 120px; height: 120px; perspective: 800px; }
         .dice-3d {
             width: 100%; height: 100%; position: relative; transform-style: preserve-3d;
             transform: translateZ(-60px); 
@@ -184,7 +201,6 @@
             border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 4rem; font-weight: bold; color: #334155;
             box-shadow: inset 0 0 20px rgba(0,0,0,0.1), 0 0 15px rgba(0,0,0,0.2);
         }
-        /* 주사위 면 배치 */
         .front  { transform: rotateY(  0deg) translateZ(60px); }
         .back   { transform: rotateY(180deg) translateZ(60px); }
         .right  { transform: rotateY( 90deg) translateZ(60px); }
@@ -199,93 +215,77 @@
         }
 
         /* =========================================
-           6. 확산적 사고 대응 모달창
+           6. 문제 팝업 및 대시보드 (공간 최적화)
            ========================================= */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(8px); display: none; justify-content: center; align-items: center; z-index: 1000;
+            backdrop-filter: blur(5px); display: none; justify-content: center; align-items: center; z-index: 1000;
         }
         
         .clay-modal-box {
-            background: var(--clay-modal); width: 90%; max-width: 500px; border-radius: 40px; padding: 35px;
-            box-shadow: 15px 15px 40px rgba(0,0,0,0.2), inset 3px 3px 15px rgba(255,255,255,1);
+            background: var(--clay-modal); width: 90%; max-width: 450px; border-radius: 30px; padding: 25px;
+            box-shadow: 10px 10px 30px rgba(0,0,0,0.2), inset 3px 3px 15px rgba(255,255,255,1);
             text-align: center; display: flex; flex-direction: column; align-items: center;
         }
 
-        #timer-bar-container { width: 100%; height: 15px; background: #e2e8f0; border-radius: 10px; margin-bottom: 20px; overflow: hidden; display: none; box-shadow: inset 2px 2px 5px rgba(0,0,0,0.1);}
+        #timer-bar-container { width: 100%; height: 12px; background: #e2e8f0; border-radius: 6px; margin-bottom: 15px; overflow: hidden; display: none; }
         #timer-bar { width: 100%; height: 100%; background: #f43f5e; transition: width 1s linear; }
 
-        #question-text { font-size: 2.2rem; margin-bottom: 25px; color: #0f172a; word-break: keep-all; line-height: 1.4; }
+        #question-text { font-size: 1.8rem; margin-bottom: 20px; color: #0f172a; word-break: keep-all; line-height: 1.3; }
         
-        .input-wrapper { position: relative; width: 100%; margin-bottom: 20px; }
+        .input-wrapper { position: relative; width: 100%; margin-bottom: 15px; }
         #answer-input {
-            width: 100%; height: 60px; border-radius: 20px; background: #f8fafc;
-            box-shadow: inset 4px 4px 8px rgba(0,0,0,0.1), inset -4px -4px 8px #fff;
-            font-size: 1.8rem; text-align: center; color: #334155; border: 2px solid transparent; 
-            outline: none; font-family: 'Jua'; box-sizing: border-box; transition: border 0.2s;
+            width: 100%; height: 50px; border-radius: 15px; background: #f8fafc;
+            box-shadow: inset 3px 3px 6px rgba(0,0,0,0.1), inset -3px -3px 6px #fff;
+            font-size: 1.5rem; text-align: center; color: #334155; border: 2px solid transparent; 
+            outline: none; font-family: 'Jua'; box-sizing: border-box;
         }
         #answer-input:focus { border: 2px solid #38bdf8; background: #ffffff; }
 
         .numpad {
-            display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 100%; max-width: 300px; margin-bottom: 20px;
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; width: 100%; max-width: 250px; margin-bottom: 15px;
         }
         .num-btn {
-            padding: 12px 0; font-size: 1.5rem; background: #e2e8f0; color: #334155; border-radius: 15px;
-            box-shadow: 4px 4px 8px rgba(148, 163, 184, 0.3), -4px -4px 8px #ffffff, inset 2px 2px 5px rgba(255,255,255,0.8);
+            padding: 10px 0; font-size: 1.3rem; background: #e2e8f0; border-radius: 12px;
+            box-shadow: 3px 3px 6px rgba(148, 163, 184, 0.3), -3px -3px 6px #ffffff, inset 1px 1px 3px rgba(255,255,255,0.8);
         }
         .num-btn.delete { background: #fca5a5; color: white;}
         .num-btn.clear { background: #cbd5e1; }
 
-        .submit-btn { width: 180px; padding: 15px; font-size: 1.5rem; background: #3b82f6; letter-spacing: 1px; }
-        
-        /* 확산적 사고용 스페셜 버튼 */
-        #open-ended-btn {
-            display: none; width: 100%; padding: 20px; font-size: 1.8rem; background: #8b5cf6; margin-top: 10px;
-        }
+        .submit-btn { width: 150px; padding: 12px; font-size: 1.3rem; background: #3b82f6; }
+        #open-ended-btn { display: none; width: 100%; padding: 15px; font-size: 1.5rem; background: #8b5cf6; margin-top: 10px; }
 
-        /* =========================================
-           7. 세련된 교사 대시보드
-           ========================================= */
-        #admin-modal .clay-modal-box { width: 95%; max-width: 700px; max-height: 85vh; padding: 40px; }
-        .admin-header { margin-bottom: 20px; text-align: center; width: 100%; }
-        .admin-header h2 { margin: 0 0 10px 0; color: #0369a1; font-size: 2rem; }
-        .admin-header p { margin: 0; font-size: 1.1rem; color: #64748b; background:#f1f5f9; padding:10px; border-radius: 15px;}
+        /* 대시보드 리스트 높이 확보 (10개 한눈에 보이게 최적화) */
+        #admin-modal .clay-modal-box { width: 95%; max-width: 700px; height: 90vh; max-height: 800px; padding: 25px; }
+        .admin-header h2 { margin: 0 0 5px 0; color: #0369a1; font-size: 1.8rem; }
+        .admin-header p { margin: 0 0 15px 0; font-size: 1rem; color: #64748b; background:#f1f5f9; padding:8px; border-radius: 10px;}
 
         .q-list { 
-            flex: 1; overflow-y: auto; width: 100%; text-align: left; margin-bottom: 20px; 
-            padding-right: 10px; display: flex; flex-direction: column; gap: 15px;
+            flex: 1; overflow-y: auto; width: 100%; text-align: left; margin-bottom: 15px; 
+            padding-right: 5px; display: flex; flex-direction: column; gap: 10px;
         }
         .q-item { 
-            background: #ffffff; padding: 15px; border-radius: 20px; border: 2px solid #e2e8f0;
-            display: flex; align-items: center; gap: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.02); transition: all 0.2s;
+            background: #ffffff; padding: 10px; border-radius: 15px; border: 2px solid #e2e8f0;
+            display: flex; align-items: center; gap: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);
         }
-        .q-item:focus-within { border-color: #38bdf8; box-shadow: 0 4px 12px rgba(56, 189, 248, 0.15); }
-        .q-item-inputs { flex: 1; display: flex; flex-direction: column; gap: 10px; }
+        .q-item-inputs { flex: 1; display: flex; flex-direction: column; gap: 6px; }
         .q-item input { 
-            width: 100%; padding: 12px 15px; font-family: 'Jua'; font-size: 1.2rem;
-            background: #f8fafc; border: none; border-radius: 12px; outline: none; box-sizing: border-box; box-shadow: inset 2px 2px 4px rgba(0,0,0,0.05);
+            width: 100%; padding: 8px 12px; font-family: 'Jua'; font-size: 1.1rem;
+            background: #f8fafc; border: none; border-radius: 8px; outline: none; box-sizing: border-box; box-shadow: inset 1px 1px 3px rgba(0,0,0,0.05);
         }
-        .q-item input:focus { background: #fff; }
-        
-        .delete-btn {
-            background: #ef4444; width: 50px; height: 50px; border-radius: 15px; font-size: 1.5rem;
-            display: flex; align-items: center; justify-content: center; padding: 0;
-        }
+        .delete-btn { background: #ef4444; width: 40px; height: 40px; border-radius: 10px; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; padding: 0; }
 
-        .admin-controls { display: flex; gap: 15px; width: 100%; justify-content: center; }
-        .admin-controls .clay-box { flex: 1; max-width: 200px; padding: 15px 0; font-size: 1.3rem; }
+        .admin-controls { display: flex; gap: 10px; width: 100%; justify-content: center; }
+        .admin-controls .clay-box { flex: 1; max-width: 150px; padding: 12px 0; font-size: 1.2rem; }
         .btn-add { background: #8b5cf6; }
         .btn-save { background: #10b981; }
         .btn-close { background: #64748b; }
 
-        /* 피드백 애니메이션 */
-        #feedback-overlay {
-            position: fixed; top:0; left:0; width:100%; height:100%; display:none; justify-content:center; align-items:center; z-index: 2000; font-size: 8rem; font-weight: bold; pointer-events: none; text-align: center;
-        }
-        .correct-text { color: #10b981; text-shadow: 0 0 40px white, 2px 2px 10px rgba(0,0,0,0.2); }
-        .wrong-text { color: #ef4444; text-shadow: 0 0 40px white, 2px 2px 10px rgba(0,0,0,0.2); }
-        @keyframes popIn { 0% { transform: scale(0.3) rotate(-10deg); opacity: 0; } 60% { transform: scale(1.2) rotate(5deg); opacity: 1; } 100% { transform: scale(1) rotate(0deg); opacity: 1; } }
-        .animate-pop { animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        #feedback-overlay { position: fixed; top:0; left:0; width:100%; height:100%; display:none; justify-content:center; align-items:center; z-index: 2000; font-size: 8rem; font-weight: bold; pointer-events: none; text-align: center; }
+        .correct-text { color: #10b981; text-shadow: 0 0 30px white, 2px 2px 5px rgba(0,0,0,0.2); }
+        .wrong-text { color: #ef4444; text-shadow: 0 0 30px white, 2px 2px 5px rgba(0,0,0,0.2); }
+        @keyframes popIn { 0% { transform: scale(0.3); opacity: 0; } 60% { transform: scale(1.2); opacity: 1; } 100% { transform: scale(1); opacity: 1; } }
+        .animate-pop { animation: popIn 0.5s ease-out forwards; }
 
     </style>
 </head>
@@ -293,6 +293,8 @@
 
 <div id="app">
     <div id="admin-btn" class="clay-btn-action" onclick="openAdmin()">⚙️</div>
+    <div id="home-btn" class="clay-box clay-btn-action float-btn" onclick="goHome()" style="display:none;">🏠</div>
+    <div id="sound-btn" class="clay-box clay-btn-action float-btn" onclick="toggleSound()">🔊</div>
 
     <div id="setup-screen" class="no-scrollbar">
         <h1>✨ 말랑말랑 보드게임</h1>
@@ -315,26 +317,26 @@
             </div>
         </div>
 
-        <div class="setting-group" style="margin-top: 5px;">
-            <label>1P 캐릭터 선택:</label>
-            <div class="char-select-container" id="p1-chars">
-                <div class="char-option selected-1p" onclick="selectChar(1, '🐰')">🐰</div>
-                <div class="char-option" onclick="selectChar(1, '🐶')">🐶</div>
-                <div class="char-option" onclick="selectChar(1, '🦊')">🦊</div>
-                <div class="char-option" onclick="selectChar(1, '🐼')">🐼</div>
+        <div class="setting-row">
+            <div class="setting-group">
+                <label>1P 캐릭터:</label>
+                <div class="char-select-container" id="p1-chars">
+                    <div class="char-option selected-1p" onclick="selectChar(1, '🐰')">🐰</div>
+                    <div class="char-option" onclick="selectChar(1, '🐶')">🐶</div>
+                    <div class="char-option" onclick="selectChar(1, '🦊')">🦊</div>
+                </div>
             </div>
-        </div>
-        <div class="setting-group" id="p2-char-group" style="margin-top: 5px;">
-            <label>2P 캐릭터 선택:</label>
-            <div class="char-select-container" id="p2-chars">
-                <div class="char-option" onclick="selectChar(2, '🐢')">🐢</div>
-                <div class="char-option selected-2p" onclick="selectChar(2, '🐱')">🐱</div>
-                <div class="char-option" onclick="selectChar(2, '🐻')">🐻</div>
-                <div class="char-option" onclick="selectChar(2, '🐸')">🐸</div>
+            <div class="setting-group" id="p2-char-group">
+                <label>2P 캐릭터:</label>
+                <div class="char-select-container" id="p2-chars">
+                    <div class="char-option" onclick="selectChar(2, '🐢')">🐢</div>
+                    <div class="char-option selected-2p" onclick="selectChar(2, '🐱')">🐱</div>
+                    <div class="char-option" onclick="selectChar(2, '🐻')">🐻</div>
+                </div>
             </div>
         </div>
 
-        <div class="setting-group" style="margin-top: 5px;">
+        <div class="setting-group">
             <label>문제 풀이 시간:</label>
             <select id="sel-timer">
                 <option value="0">무제한 (여유롭게)</option>
@@ -355,13 +357,11 @@
             <div id="player2" class="player-token">🐱</div>
         </div>
 
-        <div class="controls">
-            <button class="clay-box clay-btn-action dice-btn" id="btn-roll" onclick="rollDiceAction()">🎲 주사위 굴리기</button>
+        <div class="dice-trigger-wrapper" id="dice-trigger-wrapper">
+            <div class="dice-trigger-text">👇 주사위를 터치하세요!</div>
+            <div class="dice-trigger" onclick="rollDiceAction()">🎲</div>
         </div>
     </div>
-
-    <div id="home-btn" class="clay-box clay-btn-action float-btn" onclick="goHome()">🏠</div>
-    <div id="sound-btn" class="clay-box clay-btn-action float-btn" onclick="toggleSound()">🔊</div>
 </div>
 
 <div id="dice-overlay">
@@ -380,7 +380,6 @@
 <div id="question-modal" class="modal-overlay">
     <div class="clay-modal-box">
         <div id="timer-bar-container"><div id="timer-bar"></div></div>
-        
         <div id="question-text">문제</div>
         
         <div id="normal-input-area" style="width:100%;">
@@ -412,13 +411,13 @@
     <div class="clay-modal-box">
         <div class="admin-header">
             <h2>⚙️ 문제 출제 대시보드</h2>
-            <p>💡 <b>팁:</b> 정답 칸을 비워두면 학생이 자유롭게 말하고 넘어가는 <b>'확산적 사고(오픈엔디드)'</b> 문제가 됩니다.</p>
+            <p>💡 <b>정답을 비우면</b> 학생이 자유롭게 말하는 오픈형 문제가 됩니다.</p>
         </div>
         
         <div class="q-list no-scrollbar" id="admin-q-list"></div>
 
         <div class="admin-controls">
-            <button class="clay-box clay-btn-action btn-add" onclick="addQuestionField()">+ 문제 추가</button>
+            <button class="clay-box clay-btn-action btn-add" onclick="addQuestionField()">+ 1개 추가</button>
             <button class="clay-box clay-btn-action btn-save" onclick="saveAdmin()">저장</button>
             <button class="clay-box clay-btn-action btn-close" onclick="closeAdmin()">닫기</button>
         </div>
@@ -429,7 +428,7 @@
 
 <script>
     /* =========================================
-       1. 자체 사운드 엔진 (Web Audio API)
+       1. 자체 사운드 엔진 (가볍고 빠름)
        ========================================= */
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     let audioCtx = null;
@@ -458,7 +457,7 @@
         osc.stop(audioCtx.currentTime + duration);
     }
 
-    function playRollSound() { // 굴러가는 소리
+    function playRollSound() { 
         if (!soundEnabled || !audioCtx) return;
         let count = 0;
         let interval = setInterval(() => {
@@ -467,28 +466,28 @@
         }, 80);
     }
 
-    function playJumpSound() { // 뿅! 점프 소리
+    function playJumpSound() { 
         if (!soundEnabled || !audioCtx) return;
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
         osc.type = 'sine';
-        osc.frequency.setValueAtTime(300, audioCtx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(600, audioCtx.currentTime + 0.2);
+        osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(800, audioCtx.currentTime + 0.15);
         osc.connect(gain); gain.connect(audioCtx.destination);
         osc.start();
         gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-        gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.2);
-        osc.stop(audioCtx.currentTime + 0.2);
+        gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.15);
+        osc.stop(audioCtx.currentTime + 0.15);
     }
 
-    function playCorrectSound() { // 띠링! 정답
+    function playCorrectSound() { 
         if(!soundEnabled) return;
-        playTone(523.25, 'sine', 0.15, 0.2); // C5
-        setTimeout(() => playTone(659.25, 'sine', 0.2, 0.2), 100); // E5
-        setTimeout(() => playTone(783.99, 'sine', 0.4, 0.2), 200); // G5
+        playTone(523.25, 'sine', 0.15, 0.2); 
+        setTimeout(() => playTone(659.25, 'sine', 0.2, 0.2), 100); 
+        setTimeout(() => playTone(783.99, 'sine', 0.4, 0.2), 200); 
     }
 
-    function playWrongSound() { // 떙! 오답
+    function playWrongSound() { 
         if(!soundEnabled) return;
         playTone(300, 'sawtooth', 0.2, 0.1);
         setTimeout(() => playTone(250, 'sawtooth', 0.4, 0.1), 150);
@@ -513,6 +512,7 @@
     
     let islandPositions = [];
     let customQuestions = []; 
+    let gameQuestionPool = []; // 게임 시작 시 섞어서 사용하는 풀
     let currentQ = null;
     
     let isMoving = false;
@@ -523,16 +523,14 @@
     const gameScreen = document.getElementById('game-screen');
     const boardContainer = document.getElementById('board-container');
     const turnIndicator = document.getElementById('turn-indicator');
-    const btnRoll = document.getElementById('btn-roll');
-    
+    const homeBtn = document.getElementById('home-btn');
     const questionModal = document.getElementById('question-modal');
     const answerInput = document.getElementById('answer-input');
     const timerBar = document.getElementById('timer-bar');
 
-    /* 캐릭터 선택 로직 */
     function updateCharSelectUI() {
         const mode = document.getElementById('sel-players').value;
-        document.getElementById('p2-char-group').style.display = mode === '1' ? 'none' : 'block';
+        document.getElementById('p2-char-group').style.display = mode === '1' ? 'none' : 'flex';
     }
     
     function selectChar(playerNum, char) {
@@ -547,7 +545,7 @@
     }
 
     function startGame() {
-        initAudio(); // 브라우저 오디오 권한 획득
+        initAudio(); 
         playerCount = parseInt(document.getElementById('sel-players').value);
         totalSpaces = parseInt(document.getElementById('sel-board-size').value);
         timerLimit = parseInt(document.getElementById('sel-timer').value);
@@ -555,8 +553,12 @@
         players[0].el.innerText = p1Char;
         players[1].el.innerText = p2Char;
 
+        // 문제 풀 세팅 (저장된 문제 섞기)
+        gameQuestionPool = [...customQuestions].sort(() => Math.random() - 0.5);
+
         setupScreen.style.display = 'none';
         gameScreen.style.display = 'flex';
+        homeBtn.style.display = 'flex';
         isPlaying = true;
 
         players[0].pos = 0; players[0].prevPos = 0; players[0].el.style.display = 'flex';
@@ -571,13 +573,14 @@
         isPlaying = false;
         setupScreen.style.display = 'flex';
         gameScreen.style.display = 'none';
+        homeBtn.style.display = 'none';
         questionModal.style.display = 'none';
         document.getElementById('admin-modal').style.display = 'none';
         clearInterval(timerInterval);
     }
 
     /* =========================================
-       3. 뱀처럼 굽이치는 동적 보드 생성
+       3. 완벽하게 비율이 맞는 반응형 보드 생성
        ========================================= */
     function generateBoard() {
         const islandsWrapper = document.getElementById('islands-wrapper');
@@ -586,35 +589,31 @@
         bridgesSvg.innerHTML = '';
         islandPositions = [];
 
+        // 컨테이너의 실제 가로/세로 크기 측정
         const width = boardContainer.clientWidth;
-        // 칸 수에 비례하여 맵의 세로 길이를 충분히 줍니다.
-        const height = Math.max(500, totalSpaces * 45); 
+        const height = boardContainer.clientHeight;
         
-        // 한 줄에 3~4개 정도 들어가도록 계산
         const cols = width > 600 ? 5 : 4; 
         const rows = Math.ceil(totalSpaces / cols);
         
-        const xStep = width / cols;
-        const yStep = height / rows;
-        boardContainer.style.height = `${yStep * rows + 80}px`;
-
         let svgPath = '';
-        let dPath = ''; // SVG 베지에 곡선용
+        let dPath = '';
 
         for (let i = 0; i < totalSpaces; i++) {
             const row = Math.floor(i / cols);
             const isEvenRow = (row % 2 === 0);
-            let colIndex = isEvenRow ? (i % cols) : ((cols - 1) - (i % cols));
+            const col = isEvenRow ? (i % cols) : ((cols - 1) - (i % cols));
 
-            // 각 섬의 위치에 자연스러운 지그재그(랜덤) 오프셋을 약간 줍니다.
-            let offsetX = (Math.random() - 0.5) * (xStep * 0.3);
-            let offsetY = (Math.random() - 0.5) * (yStep * 0.3);
+            // 화면 크기에 비례하는(%) 위치 계산 (가장자리 여백 10%~90%)
+            const paddingX = 12; // 좌우 여백 %
+            const paddingY = 15; // 상하 여백 %
             
-            // 시작과 끝은 오프셋을 주지 않음
-            if(i === 0 || i === totalSpaces-1) { offsetX = 0; offsetY = 0; }
+            const xPct = paddingX + (col * ((100 - paddingX * 2) / (cols - 1)));
+            const yPct = paddingY + (row * ((100 - paddingY * 2) / (rows > 1 ? rows - 1 : 1)));
 
-            const x = (colIndex * xStep) + (xStep / 2) + offsetX;
-            const y = (row * yStep) + (yStep / 2) + offsetY;
+            // %를 픽셀로 변환
+            const x = (width * xPct) / 100;
+            const y = (height * yPct) / 100;
             islandPositions.push({ x, y });
 
             const island = document.createElement('div');
@@ -627,21 +626,21 @@
 
             islandsWrapper.appendChild(island);
 
-            // 곡선 길(Path) 그리기 데이터 생성
+            // 부드러운 연결선(Path) 그리기
             if (i === 0) {
                 dPath += `M ${x} ${y} `;
             } else {
                 const pX = islandPositions[i - 1].x; 
                 const pY = islandPositions[i - 1].y;
-                // 베지에 제어점을 이용해 둥글게 굽이치게 만듦
+                // 베지에 곡선으로 U턴 라운딩 처리
                 const cx = (pX + x) / 2;
-                const cy = (pY + y) / 2 + (isEvenRow ? 30 : -30); // 굴곡 추가
+                const cy = (pY + y) / 2 + (isEvenRow ? 40 : -40); 
                 dPath += `Q ${cx} ${cy}, ${x} ${y} `;
             }
         }
         
-        // 이중 선으로 입체적인 길 표현
-        svgPath += `<path d="${dPath}" fill="none" stroke="#b45309" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>`;
+        // 굵고 둥근 SVG 연결선
+        svgPath += `<path d="${dPath}" fill="none" stroke="#b45309" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"/>`;
         svgPath += `<path d="${dPath}" fill="none" stroke="#f59e0b" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>`;
         bridgesSvg.innerHTML = svgPath;
         
@@ -655,9 +654,9 @@
         const pos = islandPositions[p.pos];
         
         if (animate) {
-            p.el.style.transition = 'left 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), top 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), transform 0.3s';
+            p.el.style.transition = 'left 0.4s ease, top 0.4s ease, transform 0.3s';
             p.el.classList.add('jump-anim');
-            playJumpSound(); // 뿅 소리
+            playJumpSound(); 
             setTimeout(() => p.el.classList.remove('jump-anim'), 400);
         } else {
             p.el.style.transition = 'none';
@@ -690,47 +689,44 @@
     }
 
     /* =========================================
-       4. 실감나는 3D 주사위 애니메이션
+       4. 클릭형 3D 주사위 애니메이션
        ========================================= */
     function rollDiceAction() {
         if (isMoving) return;
         isMoving = true;
-        btnRoll.disabled = true;
+        initAudio(); 
 
-        initAudio(); // 권한 보장
-
+        const triggerWrapper = document.getElementById('dice-trigger-wrapper');
         const overlay = document.getElementById('dice-overlay');
         const diceEl = document.getElementById('dice');
+        
+        triggerWrapper.style.opacity = '0.3'; // 누르면 살짝 흐려짐
         overlay.style.display = 'flex';
         
-        // 팽그르르 도는 클래스 추가 & 효과음 재생
         diceEl.className = 'dice-3d rolling-fast';
         playRollSound();
 
         const result = Math.floor(Math.random() * 6) + 1;
-        
         const rotations = {
             1: { x: 0, y: 0 }, 2: { x: -90, y: 0 }, 3: { x: 0, y: -90 },
             4: { x: 0, y: 90 }, 5: { x: 90, y: 0 }, 6: { x: 180, y: 0 }
         };
 
-        // 1.5초 후 멈춤
         setTimeout(() => {
-            diceEl.className = 'dice-3d'; // 회전 애니메이션 제거
-            // 결과면에 맞게 하드 코딩된 회전값 + 추가 바퀴(720deg)를 더해 착지감을 줌
+            diceEl.className = 'dice-3d'; 
             const finalX = rotations[result].x + 720;
             const finalY = rotations[result].y + 720;
             
             diceEl.style.transition = 'transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
             diceEl.style.transform = `translateZ(-60px) rotateX(${finalX}deg) rotateY(${finalY}deg)`;
             
-            // 멈춘 후 1초 뒤에 이동 시작
             setTimeout(() => {
                 overlay.style.display = 'none';
-                diceEl.style.transition = 'none'; // 리셋
+                triggerWrapper.style.opacity = '1';
+                diceEl.style.transition = 'none'; 
                 movePlayerStepByStep(result);
             }, 1000);
-        }, 1500);
+        }, 1200);
     }
 
     function movePlayerStepByStep(steps) {
@@ -755,29 +751,26 @@
                     }
                 }, 500);
             }
-        }, 450); // 점프 애니메이션 시간에 맞춤
+        }, 450); 
     }
 
     /* =========================================
-       5. 문제 출제 및 확산적 사고 처리
+       5. 출제 로직 (교사 문제 팝업 -> 없으면 수학)
        ========================================= */
     function askQuestion() {
         answerInput.value = '';
         
-        let qData = customQuestions.length > 0 ? customQuestions[Math.floor(Math.random() * customQuestions.length)] : null;
-        
-        if (qData) {
-            currentQ = qData;
-            document.getElementById('question-text').innerText = qData.q;
+        // 풀에 문제가 남아있으면 하나 꺼냄, 없으면 수학 문제 생성
+        if (gameQuestionPool.length > 0) {
+            currentQ = gameQuestionPool.pop();
+            document.getElementById('question-text').innerText = currentQ.q;
         } else {
-            // 기본 문제
             const num1 = Math.floor(Math.random() * 20) + 1;
             const num2 = Math.floor(Math.random() * 20) + 1;
             currentQ = { q: `${num1} + ${num2} = ?`, a: (num1 + num2).toString() };
             document.getElementById('question-text').innerText = currentQ.q;
         }
 
-        // 확산적 사고 (정답이 빈칸인 경우) 처리
         const isMenuOpenEnded = (currentQ.a === "");
         const normalArea = document.getElementById('normal-input-area');
         const openBtn = document.getElementById('open-ended-btn');
@@ -792,7 +785,6 @@
 
         questionModal.style.display = 'flex';
 
-        // 타이머 시작 (확산적 사고에도 타이머는 적용됨)
         if (timerLimit > 0) {
             document.getElementById('timer-bar-container').style.display = 'block';
             timerBar.style.width = '100%';
@@ -816,7 +808,6 @@
         }
     }
 
-    // 화면 내장 숫자 키패드 동작
     function inputNumpad(num) { answerInput.value += num; }
     function deleteNumpad() { answerInput.value = answerInput.value.slice(0, -1); }
     function clearNumpad() { answerInput.value = ''; }
@@ -843,7 +834,6 @@
         }
     }
 
-    // 확산적 사고 통과 버튼 처리
     function passOpenEnded() {
         clearInterval(timerInterval);
         questionModal.style.display = 'none';
@@ -859,7 +849,7 @@
         
         setTimeout(() => {
             p.pos = p.prevPos; 
-            updatePlayerPosition(currentPlayerIdx, true); // 뒤로 돌아가기
+            updatePlayerPosition(currentPlayerIdx, true); 
             nextTurn();
         }, 1500);
     }
@@ -871,7 +861,6 @@
                 updateTurnUI();
             }
             isMoving = false;
-            btnRoll.disabled = false;
         }, 1500);
     }
 
@@ -888,7 +877,7 @@
     }
 
     /* =========================================
-       6. 교사 대시보드 (디자인/로직 개선)
+       6. 교사 대시보드 (기본 10문제 생성 로직 포함)
        ========================================= */
     function openAdmin() {
         document.getElementById('admin-modal').style.display = 'flex';
@@ -901,8 +890,13 @@
     function renderAdminQuestions() {
         const adminQList = document.getElementById('admin-q-list');
         adminQList.innerHTML = '';
-        if (customQuestions.length === 0) addQuestionField(); 
-        else customQuestions.forEach(item => addQuestionField(item.q, item.a));
+        
+        // 저장된 문제가 없으면 기본적으로 10칸을 그려줍니다.
+        if (customQuestions.length === 0) {
+            for(let i=0; i<10; i++) addQuestionField(); 
+        } else {
+            customQuestions.forEach(item => addQuestionField(item.q, item.a));
+        }
     }
 
     function addQuestionField(q = "", a = "") {
@@ -911,8 +905,8 @@
         div.className = 'q-item';
         div.innerHTML = `
             <div class="q-item-inputs">
-                <input type="text" class="q-input" placeholder="❓ 문제 입력 (예: 주인공의 이름은?)" value="${q}">
-                <input type="text" class="a-input" placeholder="❗ 정답 입력 (비워두면 자유 답변 모드)" value="${a}">
+                <input type="text" class="q-input" placeholder="❓ 문제 입력 (예: 태양계에서 가장 큰 행성은?)" value="${q}">
+                <input type="text" class="a-input" placeholder="❗ 정답 입력 (비워두면 자유 발표 모드)" value="${a}">
             </div>
             <button class="clay-box clay-btn-action delete-btn" onclick="this.parentElement.remove()">🗑️</button>
         `;
@@ -926,17 +920,22 @@
         customQuestions = [];
         for (let i = 0; i < qInputs.length; i++) {
             const qVal = qInputs[i].value.trim();
-            const aVal = aInputs[i].value.trim(); // 비어있어도 허용
+            const aVal = aInputs[i].value.trim(); 
             if (qVal !== "") {
                 customQuestions.push({ q: qVal, a: aVal });
             }
         }
-        alert(`총 ${customQuestions.length}개의 문제가 저장되었습니다.`);
+        alert(`총 ${customQuestions.length}개의 문제가 출제되었습니다.\n(나머지 칸은 수학 문제가 출제됩니다.)`);
         closeAdmin();
     }
 
+    // 창 크기가 변경될 때 비율에 맞춰 말판 위치 자동 재계산 (반응형의 핵심)
+    let resizeTimer;
     window.addEventListener('resize', () => {
-        if (isPlaying) generateBoard();
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+            if (isPlaying) generateBoard();
+        }, 100);
     });
 
 </script>
