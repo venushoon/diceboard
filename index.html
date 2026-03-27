@@ -198,7 +198,7 @@
             border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 4.5rem; font-weight: bold; color: #1e293b;
             box-shadow: inset 0 0 20px rgba(0,0,0,0.1), 0 0 15px rgba(0,0,0,0.2);
         }
-        /* 주사위 6 명확하게 밑줄 처리 */
+        
         .dice-face u { text-decoration-thickness: 4px; text-underline-offset: 6px; text-decoration-color: #ef4444; }
         
         .front  { transform: rotateY(  0deg) translateZ(60px); }
@@ -233,39 +233,41 @@
 
         #question-text { font-size: 1.8rem; margin-bottom: 20px; color: #0f172a; word-break: keep-all; line-height: 1.3; font-weight: bold;}
         
-        .input-wrapper { position: relative; width: 100%; margin-bottom: 15px; }
+        /* 중앙 정렬 완벽 반영 */
+        #normal-input-area { display: flex; flex-direction: column; align-items: center; width: 100%; }
+        
+        .input-wrapper { display: flex; justify-content: center; width: 100%; margin-bottom: 15px; }
         #answer-input {
-            width: 100%; height: 50px; border-radius: 15px; background: #f8fafc;
+            width: 100%; max-width: 280px; height: 50px; border-radius: 15px; background: #f8fafc;
             box-shadow: inset 3px 3px 6px rgba(0,0,0,0.1), inset -3px -3px 6px #fff;
             font-size: 1.6rem; text-align: center; color: #1e293b; border: 2px solid transparent; 
             outline: none; font-family: 'Jua'; box-sizing: border-box; font-weight: bold;
         }
         #answer-input:focus { border: 2px solid #38bdf8; background: #ffffff; }
 
-        /* 숫자 키패드 시인성 강화 */
         .numpad {
-            display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 100%; max-width: 280px; margin-bottom: 20px;
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 100%; max-width: 280px; 
+            margin: 0 auto 20px auto; /* 중앙 정렬 */
         }
         .num-btn {
             padding: 12px 0; font-size: 1.5rem; background: #e2e8f0; border-radius: 12px; color: #1e293b; font-weight: bold;
             box-shadow: 3px 3px 6px rgba(148, 163, 184, 0.4), -3px -3px 6px #ffffff, inset 1px 1px 3px rgba(255,255,255,0.8);
             transition: all 0.1s;
         }
-        /* 누를 때 색상 반전 효과 */
         .num-btn:active { background: #3b82f6; color: white; transform: scale(0.92); box-shadow: inset 3px 3px 8px rgba(0,0,0,0.3); }
         .num-btn.delete { background: #fca5a5; color: white;}
         .num-btn.delete:active { background: #ef4444; }
         .num-btn.clear { background: #cbd5e1; }
         .num-btn.clear:active { background: #94a3b8; }
 
-        .btn-group-row { display: flex; gap: 10px; width: 100%; }
+        .btn-group-row { display: flex; gap: 10px; width: 100%; max-width: 280px; }
         .submit-btn { flex: 1.5; padding: 15px; font-size: 1.4rem; background: #3b82f6; }
         .pass-btn { flex: 1; padding: 15px; font-size: 1.4rem; background: #94a3b8; color: white; }
 
         #open-ended-btn { display: none; width: 100%; padding: 15px; font-size: 1.5rem; background: #8b5cf6; margin-top: 10px; }
 
         /* =========================================
-           7. 교사 대시보드 (5문제 기본, 칸번호 매핑)
+           7. 교사 대시보드 (버튼/글자 크기 축소 반영)
            ========================================= */
         #admin-modal .clay-modal-box { width: 95%; max-width: 700px; height: 85vh; max-height: 750px; padding: 25px; }
         .admin-header h2 { margin: 0 0 5px 0; color: #0369a1; font-size: 1.8rem; }
@@ -282,7 +284,8 @@
         .q-item-inputs { flex: 1; display: flex; flex-direction: column; gap: 8px; }
         .q-item-row { display: flex; gap: 8px; }
         
-        .space-input { width: 70px; text-align: center; color: #b45309; font-weight: bold; background: #fef3c7 !important; border-color: #fde68a !important; }
+        /* 칸 번호 입력창 폰트 사이즈 줄임 */
+        .space-input { width: 60px; text-align: center; color: #b45309; font-weight: bold; background: #fef3c7 !important; border-color: #fde68a !important; font-size: 1.1rem !important; }
         .q-item input { 
             width: 100%; padding: 10px 12px; font-family: 'Jua'; font-size: 1.1rem;
             background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; outline: none; box-sizing: border-box;
@@ -290,8 +293,9 @@
         .q-item input:focus { border-color: #38bdf8; background: #fff;}
         .delete-btn { background: #ef4444; width: 45px; height: 45px; border-radius: 10px; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; padding: 0; }
 
+        /* 대시보드 하단 버튼 크기 줄임 */
         .admin-controls { display: flex; gap: 10px; width: 100%; justify-content: center; }
-        .admin-controls .clay-box { flex: 1; max-width: 150px; padding: 12px 0; font-size: 1.2rem; }
+        .admin-controls .clay-box { flex: 1; max-width: 100px; padding: 10px 0; font-size: 1.1rem; }
         .btn-add { background: #8b5cf6; }
         .btn-save { background: #10b981; }
         .btn-close { background: #64748b; }
@@ -307,9 +311,9 @@
 <body class="no-scrollbar">
 
 <div id="app">
-    <div id="admin-btn" class="clay-btn-action" onclick="openAdmin()">⚙️</div>
-    <div id="home-btn" class="clay-box clay-btn-action float-btn" onclick="goHome()" style="display:none;">🏠</div>
-    <div id="sound-btn" class="clay-box clay-btn-action float-btn" onclick="toggleSound()">🔊</div>
+    <button type="button" id="admin-btn" class="clay-btn-action clay-box" style="background: white; border:none;" onclick="openAdmin()">⚙️</button>
+    <button type="button" id="home-btn" class="clay-box clay-btn-action float-btn" onclick="goHome()" style="display:none; border:none;">🏠</button>
+    <button type="button" id="sound-btn" class="clay-box clay-btn-action float-btn" onclick="toggleSound()" style="border:none;">🔊</button>
 
     <div id="setup-screen" class="no-scrollbar">
         <h1>✨ 말랑말랑 보드게임</h1>
@@ -360,7 +364,7 @@
             </select>
         </div>
 
-        <button class="clay-box clay-btn-action start-btn" onclick="startGame()">🚀 모험 시작하기!</button>
+        <button type="button" class="clay-box clay-btn-action start-btn" onclick="startGame()">🚀 모험 시작하기!</button>
     </div>
 
     <div id="game-screen">
@@ -397,32 +401,32 @@
         <div id="timer-bar-container"><div id="timer-bar"></div></div>
         <div id="question-text">문제</div>
         
-        <div id="normal-input-area" style="width:100%;">
+        <div id="normal-input-area">
             <div class="input-wrapper">
                 <input type="text" id="answer-input" placeholder="정답을 입력하세요" autocomplete="off">
             </div>
             <div class="numpad" id="custom-numpad">
-                <button class="clay-box clay-btn-action num-btn" onclick="inputNumpad('1')">1</button>
-                <button class="clay-box clay-btn-action num-btn" onclick="inputNumpad('2')">2</button>
-                <button class="clay-box clay-btn-action num-btn" onclick="inputNumpad('3')">3</button>
-                <button class="clay-box clay-btn-action num-btn" onclick="inputNumpad('4')">4</button>
-                <button class="clay-box clay-btn-action num-btn" onclick="inputNumpad('5')">5</button>
-                <button class="clay-box clay-btn-action num-btn" onclick="inputNumpad('6')">6</button>
-                <button class="clay-box clay-btn-action num-btn" onclick="inputNumpad('7')">7</button>
-                <button class="clay-box clay-btn-action num-btn" onclick="inputNumpad('8')">8</button>
-                <button class="clay-box clay-btn-action num-btn" onclick="inputNumpad('9')">9</button>
-                <button class="clay-box clay-btn-action num-btn clear" onclick="clearNumpad()">C</button>
-                <button class="clay-box clay-btn-action num-btn" onclick="inputNumpad('0')">0</button>
-                <button class="clay-box clay-btn-action num-btn delete" onclick="deleteNumpad()">⌫</button>
+                <button type="button" class="clay-box clay-btn-action num-btn" onclick="inputNumpad('1')">1</button>
+                <button type="button" class="clay-box clay-btn-action num-btn" onclick="inputNumpad('2')">2</button>
+                <button type="button" class="clay-box clay-btn-action num-btn" onclick="inputNumpad('3')">3</button>
+                <button type="button" class="clay-box clay-btn-action num-btn" onclick="inputNumpad('4')">4</button>
+                <button type="button" class="clay-box clay-btn-action num-btn" onclick="inputNumpad('5')">5</button>
+                <button type="button" class="clay-box clay-btn-action num-btn" onclick="inputNumpad('6')">6</button>
+                <button type="button" class="clay-box clay-btn-action num-btn" onclick="inputNumpad('7')">7</button>
+                <button type="button" class="clay-box clay-btn-action num-btn" onclick="inputNumpad('8')">8</button>
+                <button type="button" class="clay-box clay-btn-action num-btn" onclick="inputNumpad('9')">9</button>
+                <button type="button" class="clay-box clay-btn-action num-btn clear" onclick="clearNumpad()">C</button>
+                <button type="button" class="clay-box clay-btn-action num-btn" onclick="inputNumpad('0')">0</button>
+                <button type="button" class="clay-box clay-btn-action num-btn delete" onclick="deleteNumpad()">⌫</button>
             </div>
             
             <div class="btn-group-row">
-                <button class="clay-box clay-btn-action pass-btn" onclick="passQuestion()">패스 🥲</button>
-                <button class="clay-box clay-btn-action submit-btn" onclick="checkAnswer()">확인</button>
+                <button type="button" class="clay-box clay-btn-action pass-btn" onclick="passQuestion()">패스 🥲</button>
+                <button type="button" class="clay-box clay-btn-action submit-btn" onclick="checkAnswer()">확인</button>
             </div>
         </div>
 
-        <button id="open-ended-btn" class="clay-box clay-btn-action" onclick="passOpenEnded()">🗣️ 발표 완료 (넘어가기)</button>
+        <button type="button" id="open-ended-btn" class="clay-box clay-btn-action" onclick="passOpenEnded()">🗣️ 발표 완료 (넘어가기)</button>
     </div>
 </div>
 
@@ -436,9 +440,9 @@
         <div class="q-list no-scrollbar" id="admin-q-list"></div>
 
         <div class="admin-controls">
-            <button class="clay-box clay-btn-action btn-add" onclick="addQuestionField()">+ 1개 추가</button>
-            <button class="clay-box clay-btn-action btn-save" onclick="saveAdmin()">저장</button>
-            <button class="clay-box clay-btn-action btn-close" onclick="closeAdmin()">닫기</button>
+            <button type="button" class="clay-box clay-btn-action btn-add" onclick="addQuestionField()">+ 추가</button>
+            <button type="button" class="clay-box clay-btn-action btn-save" onclick="saveAdmin()">저장</button>
+            <button type="button" class="clay-box clay-btn-action btn-close" onclick="closeAdmin()">닫기</button>
         </div>
     </div>
 </div>
@@ -521,9 +525,7 @@
     let currentPlayerIdx = 0;
     
     let islandPositions = [];
-    
-    // 요구사항 반영: 특정 칸 번호에 매핑되는 문제 저장 객체
-    let customQuestionsMap = {}; // 예: { 1: {q: '수도?', a: '서울'}, 5: {q: '3+3?', a: '6'} }
+    let customQuestionsMap = {}; 
     let currentQ = null;
     
     let isMoving = false;
@@ -690,7 +692,7 @@
     }
 
     /* =========================================
-       4. 클릭형 3D 주사위 애니메이션
+       4. 클릭형 3D 주사위 애니메이션 (6 회전 수정)
        ========================================= */
     function rollDiceAction() {
         if (isMoving) return;
@@ -708,9 +710,11 @@
         playRollSound();
 
         const result = Math.floor(Math.random() * 6) + 1;
+        
+        // 6이 거꾸로(9처럼) 보이지 않도록 y축 180도 회전으로 개선
         const rotations = {
             1: { x: 0, y: 0 }, 2: { x: -90, y: 0 }, 3: { x: 0, y: -90 },
-            4: { x: 0, y: 90 }, 5: { x: 90, y: 0 }, 6: { x: 180, y: 0 }
+            4: { x: 0, y: 90 }, 5: { x: 90, y: 0 }, 6: { x: 0, y: 180 } 
         };
 
         setTimeout(() => {
@@ -756,17 +760,15 @@
     }
 
     /* =========================================
-       5. 출제 로직 (칸 번호 1:1 매칭 & 수학문제)
+       5. 출제 로직
        ========================================= */
     function askQuestion(spaceIndex) {
         answerInput.value = '';
         
-        // 요구사항 반영: 도착한 말판 번호(spaceIndex)와 대시보드 문제가 일치하는지 확인
         if (customQuestionsMap[spaceIndex]) {
             currentQ = customQuestionsMap[spaceIndex];
             document.getElementById('question-text').innerText = `[${spaceIndex}번 칸] ${currentQ.q}`;
         } else {
-            // 지정된 문제가 없으면 랜덤 수학 문제
             const num1 = Math.floor(Math.random() * 20) + 1;
             const num2 = Math.floor(Math.random() * 20) + 1;
             currentQ = { q: `${num1} + ${num2} = ?`, a: (num1 + num2).toString() };
@@ -781,7 +783,7 @@
             normalArea.style.display = 'none';
             openBtn.style.display = 'block';
         } else {
-            normalArea.style.display = 'block';
+            normalArea.style.display = 'flex'; // 중앙 정렬된 레이아웃 복구
             openBtn.style.display = 'none';
         }
 
@@ -818,7 +820,6 @@
         if (event.key === "Enter") checkAnswer();
     });
 
-    // 요구사항 반영: 모를 경우 패스 버튼 로직
     function passQuestion() {
         clearInterval(timerInterval);
         playWrongSound();
@@ -843,7 +844,6 @@
         }
     }
 
-    // 오픈엔디드 (정답 비움) 성공 처리
     function passOpenEnded() {
         clearInterval(timerInterval);
         questionModal.style.display = 'none';
@@ -857,7 +857,6 @@
         showFeedback(msg, false);
         let p = players[currentPlayerIdx];
         
-        // 오답 또는 패스 시 원래 자리로 돌아감
         setTimeout(() => {
             p.pos = p.prevPos; 
             updatePlayerPosition(currentPlayerIdx, true); 
@@ -871,7 +870,7 @@
                 currentPlayerIdx = currentPlayerIdx === 0 ? 1 : 0;
                 updateTurnUI();
             }
-            isMoving = false;
+            isMoving = false; // 주사위 락 해제
         }, 1500);
     }
 
@@ -888,9 +887,10 @@
     }
 
     /* =========================================
-       6. 교사 대시보드 (기본 5문제 & 칸 번호 매핑)
+       6. 교사 대시보드
        ========================================= */
     function openAdmin() {
+        if(isMoving) return; // 말이 이동 중일 때 버튼 오작동 방지
         document.getElementById('admin-modal').style.display = 'flex';
         renderAdminQuestions();
     }
@@ -904,7 +904,6 @@
         
         const savedKeys = Object.keys(customQuestionsMap);
         
-        // 요구사항 반영: 저장된 문제가 없으면 기본으로 1~5번 칸에 5개의 입력창 생성 (한 화면 최적화)
         if (savedKeys.length === 0) {
             for(let i=1; i<=5; i++) {
                 addQuestionField(i, "", ""); 
@@ -923,12 +922,12 @@
         div.innerHTML = `
             <div class="q-item-inputs">
                 <div class="q-item-row">
-                    <input type="number" class="space-input" placeholder="칸 번호" value="${spaceNum}">
+                    <input type="number" class="space-input" placeholder="칸" value="${spaceNum}">
                     <input type="text" class="q-input" placeholder="❓ 문제 입력 (예: 태양계에서 가장 큰 행성은?)" value="${q}">
                 </div>
                 <input type="text" class="a-input" placeholder="❗ 정답 입력 (비워두면 자유 발표 모드)" value="${a}">
             </div>
-            <button class="clay-box clay-btn-action delete-btn" onclick="this.parentElement.remove()">🗑️</button>
+            <button type="button" class="clay-box clay-btn-action delete-btn" onclick="this.parentElement.remove()">🗑️</button>
         `;
         adminQList.appendChild(div);
     }
@@ -938,7 +937,7 @@
         const qInputs = document.querySelectorAll('.q-input');
         const aInputs = document.querySelectorAll('.a-input');
         
-        customQuestionsMap = {}; // 맵 초기화
+        customQuestionsMap = {}; 
         let savedCount = 0;
 
         for (let i = 0; i < qInputs.length; i++) {
@@ -951,11 +950,10 @@
                 savedCount++;
             }
         }
-        alert(`총 ${savedCount}개의 문제가 말판에 배정되었습니다.\n(문제가 없는 칸은 수학 문제가 출제됩니다.)`);
+        alert(`총 ${savedCount}개의 문제가 말판에 배정되었습니다.\n(문제가 없는 칸은 랜덤 수학 문제가 출제됩니다.)`);
         closeAdmin();
     }
 
-    // 반응형 리사이즈 보정
     let resizeTimer;
     window.addEventListener('resize', () => {
         clearTimeout(resizeTimer);
