@@ -16,7 +16,1183 @@
             --clay-island-light: #fef9c3;
             
             --clay-btn: #38bdf8;
+        <!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>말랑말랑 보드게임 (블루마블 프리미엄 V4.2)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+    <style>
+        /* =========================================
+           1. 프리미엄 클레이모피즘 색상 & 6인용 변수
+           ========================================= */
+        :root {
+            --bg-ocean: #f0fdf4; 
+            --clay-island: #fef08a; 
+            --clay-island-dark: #eab308;
+            --clay-island-light: #fef9c3;
             
+            --clay-btn: #38bdf8;
+            
+            --clay-p1: #f43f5e; 
+            --clay-p2: #3b82f6; 
+            --clay-p3: #10b981; 
+            --clay-p4: #f59e0b; 
+            --clay-p5: #8b5cf6; 
+            --clay-p6: #ec4899; 
+
+            --clay-modal: #ffffff;
+            --text-color: #1e293b;
+        }
+
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, #e0f2fe 0%, #dcfce7 100%);
+            font-family: 'Jua', sans-serif;
+            color: var(--text-color);
+            touch-action: manipulation;
+            overflow: hidden; 
+        }
+
+        body { user-select: none; -webkit-user-select: none; }
+        input { user-select: auto; -webkit-user-select: auto; }
+
+        .no-scrollbar { overflow-y: auto; scrollbar-width: none; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+
+        /* =========================================
+           2. 향상된 찰흙 질감 공통
+           ========================================= */
+        .clay-box {
+            border-radius: 20px;
+            background: var(--clay-btn);
+            box-shadow: 
+                6px 6px 12px rgba(0, 0, 0, 0.1),
+                -6px -6px 12px rgba(255, 255, 255, 0.8),
+                inset 3px 3px 8px rgba(255, 255, 255, 0.5),
+                inset -3px -3px 8px rgba(0, 0, 0, 0.1);
+            color: white;
+            transition: all 0.2s ease;
+            text-align: center;
+            border: none; outline: none;
+        }
+        .clay-btn-action { cursor: pointer; }
+        .clay-btn-action:hover { filter: brightness(1.05); }
+        .clay-btn-action:active {
+            transform: scale(0.95);
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.1), -2px -2px 5px rgba(255,255,255,0.9), inset 4px 4px 10px rgba(0,0,0,0.15), inset -4px -4px 10px rgba(255,255,255,0.6);
+        }
+
+        /* =========================================
+           3. 첫 화면 UI
+           ========================================= */
+        #app {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            height: 100vh; padding: 15px; box-sizing: border-box; position: relative;
+        }
+
+        #admin-btn {
+            position: absolute; top: 15px; right: 15px; font-size: 2rem; cursor: pointer; opacity: 0.6; transition: all 0.3s;
+            background: white; border-radius: 50%; padding: 8px; box-shadow: 2px 2px 8px rgba(0,0,0,0.1); z-index: 100;
+        }
+        #admin-btn:hover { opacity: 1; transform: rotate(45deg); }
+
+        h1 { font-size: 2.2rem; text-shadow: 2px 2px 5px rgba(0,0,0,0.1); margin: 0 0 15px 0; color: #0369a1; text-align: center; }
+
+        #setup-screen {
+            background: rgba(255, 255, 255, 0.7); padding: 20px 25px; border-radius: 30px;
+            width: 100%; max-width: 650px; box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            backdrop-filter: blur(15px); display: flex; flex-direction: column; gap: 12px;
+        }
+
+        .setting-row { display: flex; gap: 10px; justify-content: space-between; }
+        .setting-group { flex: 1; display: flex; flex-direction: column; gap: 4px; font-size: 1rem; }
+        
+        select {
+            font-family: 'Jua', sans-serif; font-size: 1.1rem; padding: 8px; border-radius: 12px;
+            border: 2px solid transparent; outline: none; background: white; box-shadow: inset 2px 2px 5px rgba(0,0,0,0.05); color: #1e293b; cursor: pointer; width: 100%;
+        }
+
+        .char-grid-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .char-select-container { display: flex; gap: 2px; justify-content: space-around; background: white; padding: 5px; border-radius: 12px; box-shadow: inset 2px 2px 5px rgba(0,0,0,0.05);}
+        .char-option { font-size: 1.5rem; padding: 2px 6px; cursor: pointer; border-radius: 10px; transition: all 0.2s; border: 3px solid transparent;}
+        
+        .char-option.selected-1p { border-color: var(--clay-p1); background: #ffe4e6;}
+        .char-option.selected-2p { border-color: var(--clay-p2); background: #dbeafe;}
+        .char-option.selected-3p { border-color: var(--clay-p3); background: #d1fae5;}
+        .char-option.selected-4p { border-color: var(--clay-p4); background: #fef3c7;}
+        .char-option.selected-5p { border-color: var(--clay-p5); background: #ede9fe;}
+        .char-option.selected-6p { border-color: var(--clay-p6); background: #fce7f3;}
+
+        .start-btn { margin-top: 5px; padding: 15px; font-size: 1.5rem; background: #10b981; letter-spacing: 1px;}
+
+        /* =========================================
+           4. 게임 보드 & 테마 디자인
+           ========================================= */
+        #game-screen { display: none; width: 100%; height: 100%; flex-direction: column; align-items: center; position: relative; }
+
+        #turn-indicator {
+            font-size: 1.5rem; padding: 10px 35px; border-radius: 25px; background: white; margin: 15px 0 10px 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15); z-index: 10; font-weight: bold; transition: color 0.3s;
+        }
+
+        .board-container { position: relative; width: 100%; max-width: 1400px; flex: 1; margin-bottom: 20px; } 
+        #bridges { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
+        
+        /* 테마 1: 지그재그 섬 */
+        .island {
+            position: absolute; width: 65px; height: 65px; border-radius: 50%; background: var(--clay-island);
+            box-shadow: 4px 4px 10px rgba(234, 179, 8, 0.4), -4px -4px 10px rgba(255, 255, 255, 0.9), inset 3px 3px 8px var(--clay-island-light), inset -3px -3px 8px var(--clay-island-dark);
+            z-index: 2; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: #854d0e; font-weight: bold; transform: translate(-50%, -50%);
+        }
+        .island.start { background: #6ee7b7; color: #065f46; width: 80px; height: 80px; font-size: 1.7rem;}
+        .island.finish { background: #fca5a5; color: #991b1b; width: 80px; height: 80px; font-size: 1.7rem;}
+
+        /* 테마 2: 블루마블 타일 (크기/여백 동적 최적화 & 가독성 향상) */
+        .marble-space {
+            position: absolute; border-radius: 12px; background: #ffffff;
+            box-shadow: 4px 4px 8px rgba(0,0,0,0.1), inset 2px 2px 5px rgba(255,255,255,1), inset -2px -2px 5px rgba(0,0,0,0.05);
+            z-index: 2; display: flex; flex-direction: column; transform: translate(-50%, -50%);
+            border: 3px solid #cbd5e1; overflow: hidden; box-sizing: border-box;
+        }
+        
+        /* 번호는 작고 얇게, 공간 확보 */
+        .marble-num {
+            background: #e2e8f0; color: #475569; font-size: 0.75rem; padding: 2px 0; text-align: center; 
+            font-weight: 600; width: 100%; border-bottom: 2px solid #cbd5e1; letter-spacing: -0.5px;
+        }
+        
+        /* 문제는 크고 선명하게 */
+        .marble-q {
+            font-size: 1.05rem; line-height: 1.15; padding: 6px; color: #1e293b; text-align: center;
+            word-break: break-all; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; 
+            overflow: hidden; font-weight: bold; font-family: 'Malgun Gothic', 'Jua', sans-serif;
+            flex: 1; display: flex; align-items: center; justify-content: center;
+        }
+
+        /* 블루마블 특수 칸 (텍스트 및 색상 매칭) */
+        .marble-space.special-0 { border-color: #10b981; background: #d1fae5; }
+        .marble-space.special-0 .marble-num { background: #10b981; color: white; border-bottom: none;}
+        
+        .marble-space.special-9 { border-color: #64748b; background: #f1f5f9; }
+        .marble-space.special-9 .marble-num { background: #64748b; color: white; border-bottom: none;}
+        
+        .marble-space.special-14 { border-color: #8b5cf6; background: #ede9fe; }
+        .marble-space.special-14 .marble-num { background: #8b5cf6; color: white; border-bottom: none;}
+        
+        .marble-space.special-23 { border-color: #ef4444; background: #fee2e2; }
+        .marble-space.special-23 .marble-num { background: #ef4444; color: white; border-bottom: none;}
+
+        /* 블루마블 중앙 배경 로고 */
+        .marble-center-logo {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 60%; height: 50%; background: rgba(255,255,255,0.3); border-radius: 40px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            box-shadow: inset 8px 8px 20px rgba(0,0,0,0.05), inset -8px -8px 20px rgba(255,255,255,0.8);
+            pointer-events: none; z-index: 0; box-sizing: border-box;
+        }
+        .marble-center-logo span {
+            font-size: 4rem; color: rgba(2, 132, 199, 0.15); text-align: center; font-weight: bold;
+            text-shadow: 2px 2px 5px rgba(255,255,255,0.9), -1px -1px 3px rgba(0,0,0,0.05); line-height: 1.2;
+            margin-top: -60px; /* 주사위 위치 고려하여 살짝 위로 */
+        }
+        
+        /* 토큰(말) 및 애니메이션 */
+        .player-token {
+            position: absolute; width: 38px; height: 38px; border-radius: 50%; z-index: 10;
+            transition: left 0.4s ease-in-out, top 0.4s ease-in-out, transform 0.3s; pointer-events: none;
+            display: flex; align-items: center; justify-content: center; font-size: 1.5rem;
+            box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.4), inset 2px 2px 5px rgba(255,255,255,0.4), inset -2px -2px 5px rgba(0,0,0,0.2);
+        }
+        #player1 { background: var(--clay-p1); } #player2 { background: var(--clay-p2); }
+        #player3 { background: var(--clay-p3); } #player4 { background: var(--clay-p4); }
+        #player5 { background: var(--clay-p5); } #player6 { background: var(--clay-p6); }
+        
+        .jump-anim { animation: jumpArc 0.4s ease-in-out forwards; z-index: 100 !important; }
+        @keyframes jumpArc { 0% { margin-top: 0; transform: scale(1); } 50% { margin-top: -35px; transform: scale(1.2); } 100% { margin-top: 0; transform: scale(1); } }
+
+        .float-btn { position: fixed; width: 50px; height: 50px; border-radius: 50%; font-size: 1.5rem; display: flex; align-items: center; justify-content: center; z-index: 500; box-shadow: 2px 2px 6px rgba(0,0,0,0.15); }
+        #home-btn { top: 15px; left: 15px; background: #cbd5e1; }
+
+        /* =========================================
+           5. 중앙 3D 주사위
+           ========================================= */
+        #center-dice-wrapper {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            display: flex; flex-direction: column; align-items: center; z-index: 150; transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+        .dice-instruction {
+            background: rgba(255,255,255,0.9); padding: 8px 25px; border-radius: 20px; font-size: 1.3rem; color: #1e293b; margin-bottom: 20px; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.1); animation: floatText 2s infinite ease-in-out;
+        }
+        @keyframes floatText { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+
+        #dice-container { width: 110px; height: 110px; perspective: 800px; cursor: pointer; }
+        .dice-3d {
+            width: 100%; height: 100%; position: relative; transform-style: preserve-3d;
+            transform: translateZ(-55px) rotateX(-15deg) rotateY(-15deg); transition: transform 0.1s;
+        }
+        #dice-container:active .dice-3d { transform: translateZ(-55px) rotateX(-15deg) rotateY(-15deg) scale(0.9); }
+        
+        .dice-face {
+            position: absolute; width: 110px; height: 110px; background: white; border: 4px solid #f8fafc;
+            border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 4rem; font-weight: bold; color: #1e293b; box-shadow: inset 0 0 15px rgba(0,0,0,0.1), 0 0 10px rgba(0,0,0,0.15);
+        }
+        .dice-face u { text-decoration-thickness: 4px; text-underline-offset: 6px; text-decoration-color: #ef4444; }
+        
+        .front  { transform: rotateY(  0deg) translateZ(55px); } .back   { transform: rotateY(180deg) translateZ(55px); }
+        .right  { transform: rotateY( 90deg) translateZ(55px); } .left   { transform: rotateY(-90deg) translateZ(55px); }
+        .top    { transform: rotateX( 90deg) translateZ(55px); } .bottom { transform: rotateX(-90deg) translateZ(55px); }
+        
+        .rolling-fast { animation: rollFast 0.6s linear infinite; }
+        @keyframes rollFast { 0% { transform: translateZ(-55px) rotateX(0deg) rotateY(0deg); } 100% { transform: translateZ(-55px) rotateX(360deg) rotateY(720deg); } }
+
+        /* =========================================
+           6. 문제 모달 UI
+           ========================================= */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(5px); display: none; justify-content: center; align-items: center; z-index: 1000;
+        }
+        .clay-modal-box {
+            background: var(--clay-modal); width: 90%; max-width: 450px; border-radius: 30px; padding: 25px;
+            box-shadow: 10px 10px 30px rgba(0,0,0,0.2), inset 3px 3px 15px rgba(255,255,255,1); text-align: center; display: flex; flex-direction: column; align-items: center;
+        }
+
+        #timer-bar-container { width: 100%; height: 12px; background: #e2e8f0; border-radius: 6px; margin-bottom: 15px; overflow: hidden; display: none; }
+        #timer-bar { width: 100%; height: 100%; background: #f43f5e; transition: width 1s linear; }
+
+        #question-text { font-size: 1.8rem; margin-bottom: 20px; color: #0f172a; word-break: keep-all; line-height: 1.3; font-weight: bold;}
+        
+        #normal-input-area { display: flex; flex-direction: column; align-items: center; width: 100%; }
+        .input-wrapper { display: flex; justify-content: center; width: 100%; margin-bottom: 15px; }
+        #answer-input {
+            width: 100%; max-width: 280px; height: 50px; border-radius: 15px; background: #f8fafc;
+            box-shadow: inset 3px 3px 6px rgba(0,0,0,0.1), inset -3px -3px 6px #fff; font-size: 1.6rem; text-align: center; color: #1e293b; border: 2px solid transparent; outline: none; font-family: 'Jua'; box-sizing: border-box; font-weight: bold;
+        }
+        #answer-input:focus { border: 2px solid #38bdf8; background: #ffffff; }
+
+        .numpad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 100%; max-width: 280px; margin: 0 auto 20px auto; }
+        .num-btn {
+            padding: 12px 0; font-size: 1.5rem; background: #e2e8f0; border-radius: 12px; color: #1e293b; font-weight: bold; box-shadow: 3px 3px 6px rgba(148, 163, 184, 0.4), -3px -3px 6px #ffffff, inset 1px 1px 3px rgba(255,255,255,0.8); transition: all 0.1s;
+        }
+        .num-btn:active { background: #3b82f6; color: white; transform: scale(0.92); box-shadow: inset 3px 3px 8px rgba(0,0,0,0.3); }
+        .num-btn.delete { background: #fca5a5; color: white;} .num-btn.delete:active { background: #ef4444; }
+        .num-btn.clear { background: #cbd5e1; } .num-btn.clear:active { background: #94a3b8; }
+
+        .btn-group-row { display: flex; gap: 10px; width: 100%; max-width: 280px; }
+        .submit-btn { flex: 1.5; padding: 15px; font-size: 1.4rem; background: #3b82f6; }
+        .pass-btn { flex: 1; padding: 15px; font-size: 1.4rem; background: #94a3b8; color: white; }
+        #open-ended-btn { display: none; width: 100%; padding: 15px; font-size: 1.5rem; background: #8b5cf6; margin-top: 10px; }
+
+        /* =========================================
+           7. 교사 대시보드
+           ========================================= */
+        #admin-modal .clay-modal-box { width: 95%; max-width: 650px; height: 85vh; max-height: 700px; padding: 20px; }
+        .admin-header h2 { margin: 0 0 5px 0; color: #0369a1; font-size: 1.6rem; }
+        .admin-header p { margin: 0 0 10px 0; font-size: 0.95rem; color: #475569; background:#f1f5f9; padding:8px; border-radius: 10px; line-height: 1.3;}
+        .admin-header .warn { color:#ef4444; font-size: 0.85rem; display: block; margin-top: 5px; }
+
+        .q-list { flex: 1; overflow-y: auto; width: 100%; text-align: left; margin-bottom: 15px; padding-right: 5px; display: flex; flex-direction: column; gap: 10px; }
+        .q-item { background: #ffffff; padding: 10px; border-radius: 12px; border: 2px solid #e2e8f0; display: flex; align-items: center; gap: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+        .q-item-inputs { flex: 1; display: flex; flex-direction: column; gap: 6px; }
+        .q-item-row { display: flex; gap: 6px; }
+        
+        .space-input { width: 45px !important; flex: 0 0 45px; text-align: center; color: #b45309; font-weight: bold; background: #fef3c7 !important; border-color: #fde68a !important; font-size: 1.1rem !important; padding: 8px 4px !important; }
+        .q-item input { width: 100%; padding: 8px 10px; font-family: 'Jua'; font-size: 1rem; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; outline: none; box-sizing: border-box; }
+        .q-item input:focus { border-color: #38bdf8; background: #fff;}
+        .delete-btn { background: #ef4444; width: 40px; height: 40px; border-radius: 10px; font-size: 1.1rem; display: flex; align-items: center; justify-content: center; padding: 0; }
+
+        .admin-controls { display: flex; gap: 10px; width: 100%; justify-content: center; }
+        .admin-controls .clay-box { flex: 1; max-width: 100px; padding: 10px 0; font-size: 1.1rem; }
+        .btn-add { background: #8b5cf6; } .btn-save { background: #10b981; } .btn-close { background: #64748b; }
+
+        #feedback-overlay { position: fixed; top:0; left:0; width:100%; height:100%; display:none; justify-content:center; align-items:center; z-index: 2000; font-size: 6rem; font-weight: bold; pointer-events: none; text-align: center; flex-direction: column;}
+        .correct-text { color: #10b981; text-shadow: 0 0 30px white, 2px 2px 5px rgba(0,0,0,0.2); }
+        .wrong-text { color: #ef4444; text-shadow: 0 0 30px white, 2px 2px 5px rgba(0,0,0,0.2); }
+        .rank-text { color: #f59e0b; font-size: 4rem; text-shadow: 0 0 20px white; margin-top: 10px;}
+        @keyframes popIn { 0% { transform: scale(0.3); opacity: 0; } 60% { transform: scale(1.1); opacity: 1; } 100% { transform: scale(1); opacity: 1; } }
+        .animate-pop { animation: popIn 0.5s ease-out forwards; }
+
+    </style>
+</head>
+<body class="no-scrollbar">
+
+<div id="app">
+    <button type="button" id="admin-btn" class="clay-btn-action clay-box" style="background: white; border:none;" onclick="openAdmin()">⚙️</button>
+    <button type="button" id="home-btn" class="clay-box clay-btn-action float-btn" onclick="goHome()" style="display:none; border:none;">🏠</button>
+
+    <div id="setup-screen" class="no-scrollbar">
+        <h1>✨ 말랑말랑 보드게임</h1>
+        
+        <div class="setting-row">
+            <div class="setting-group">
+                <label>참여 인원:</label>
+                <select id="sel-players" onchange="updateCharSelectUI()">
+                    <option value="1">1인 (개인전)</option>
+                    <option value="2" selected>2인 (대결)</option>
+                    <option value="3">3인 (모둠전)</option>
+                    <option value="4">4인 (모둠전)</option>
+                    <option value="5">5인 (모둠전)</option>
+                    <option value="6">6인 (모둠전)</option>
+                </select>
+            </div>
+            <div class="setting-group">
+                <label>말판 테마:</label>
+                <select id="sel-theme" onchange="updateThemeUI()">
+                    <option value="island">자연의 섬 (지그재그)</option>
+                    <option value="marble" selected>블루마블 (사각 28칸)</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="char-grid-row">
+            <div class="setting-group" id="grp-p1">
+                <label>1P:</label>
+                <div class="char-select-container" id="p1-chars">
+                    <div class="char-option selected-1p" onclick="selectChar(1, '🐰')">🐰</div>
+                    <div class="char-option" onclick="selectChar(1, '🐶')">🐶</div>
+                    <div class="char-option" onclick="selectChar(1, '🦊')">🦊</div>
+                </div>
+            </div>
+            <div class="setting-group" id="grp-p2">
+                <label>2P:</label>
+                <div class="char-select-container" id="p2-chars">
+                    <div class="char-option" onclick="selectChar(2, '🐢')">🐢</div>
+                    <div class="char-option selected-2p" onclick="selectChar(2, '🐱')">🐱</div>
+                    <div class="char-option" onclick="selectChar(2, '🐻')">🐻</div>
+                </div>
+            </div>
+        </div>
+        <div class="char-grid-row" id="row-34" style="display: none;">
+            <div class="setting-group" id="grp-p3">
+                <label>3P:</label>
+                <div class="char-select-container" id="p3-chars">
+                    <div class="char-option selected-3p" onclick="selectChar(3, '🐼')">🐼</div>
+                    <div class="char-option" onclick="selectChar(3, '🐨')">🐨</div>
+                </div>
+            </div>
+            <div class="setting-group" id="grp-p4">
+                <label>4P:</label>
+                <div class="char-select-container" id="p4-chars">
+                    <div class="char-option selected-4p" onclick="selectChar(4, '🐸')">🐸</div>
+                    <div class="char-option" onclick="selectChar(4, '🐵')">🐵</div>
+                </div>
+            </div>
+        </div>
+        <div class="char-grid-row" id="row-56" style="display: none;">
+            <div class="setting-group" id="grp-p5">
+                <label>5P:</label>
+                <div class="char-select-container" id="p5-chars">
+                    <div class="char-option selected-5p" onclick="selectChar(5, '🐷')">🐷</div>
+                    <div class="char-option" onclick="selectChar(5, '🐭')">🐭</div>
+                </div>
+            </div>
+            <div class="setting-group" id="grp-p6">
+                <label>6P:</label>
+                <div class="char-select-container" id="p6-chars">
+                    <div class="char-option selected-6p" onclick="selectChar(6, '🦄')">🦄</div>
+                    <div class="char-option" onclick="selectChar(6, '🦁')">🦁</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="setting-row">
+            <div class="setting-group" id="grp-board-size">
+                <label>섬 말판 개수:</label>
+                <select id="sel-board-size">
+                    <option value="15" selected>15칸 (빠르게)</option>
+                    <option value="20">20칸 (보통)</option>
+                    <option value="30">30칸 (길게)</option>
+                </select>
+            </div>
+            <div class="setting-group">
+                <label>사운드 & 시간:</label>
+                <div style="display:flex; gap:5px;">
+                    <select id="sel-sound" style="flex:1;">
+                        <option value="on" selected>켜기🔊</option>
+                        <option value="off">끄기🔇</option>
+                    </select>
+                    <select id="sel-timer" style="flex:1;">
+                        <option value="0">무제한</option>
+                        <option value="15">15초</option>
+                        <option value="30" selected>30초</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <button type="button" class="clay-box clay-btn-action start-btn" onclick="startGame()">🚀 모험 시작하기!</button>
+    </div>
+
+    <div id="game-screen">
+        <div id="turn-indicator">🔴 1P 차례입니다!</div>
+        <div class="board-container" id="board-container">
+            <svg id="bridges"></svg>
+            <div id="islands-wrapper"></div>
+            <div id="player1" class="player-token">🐰</div>
+            <div id="player2" class="player-token" style="display:none;">🐱</div>
+            <div id="player3" class="player-token" style="display:none;">🐼</div>
+            <div id="player4" class="player-token" style="display:none;">🐸</div>
+            <div id="player5" class="player-token" style="display:none;">🐷</div>
+            <div id="player6" class="player-token" style="display:none;">🦄</div>
+        </div>
+
+        <div id="center-dice-wrapper">
+            <div class="dice-instruction">👇 터치해서 굴리세요!</div>
+            <div id="dice-container" onclick="rollDiceAction()">
+                <div class="dice-3d" id="dice">
+                    <div class="dice-face front">1</div>
+                    <div class="dice-face back"><u>6</u></div>
+                    <div class="dice-face right">3</div>
+                    <div class="dice-face left">4</div>
+                    <div class="dice-face top">2</div>
+                    <div class="dice-face bottom">5</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="question-modal" class="modal-overlay">
+    <div class="clay-modal-box">
+        <div id="timer-bar-container"><div id="timer-bar"></div></div>
+        <div id="question-text">문제</div>
+        
+        <div id="normal-input-area">
+            <div class="input-wrapper">
+                <input type="text" id="answer-input" placeholder="정답을 입력하세요" autocomplete="off">
+            </div>
+            <div class="numpad" id="custom-numpad">
+                <button type="button" class="clay-box clay-btn-action num-btn" onclick="inputNumpad('1')">1</button>
+                <button type="button" class="clay-box clay-btn-action num-btn" onclick="inputNumpad('2')">2</button>
+                <button type="button" class="clay-box clay-btn-action num-btn" onclick="inputNumpad('3')">3</button>
+                <button type="button" class="clay-box clay-btn-action num-btn" onclick="inputNumpad('4')">4</button>
+                <button type="button" class="clay-box clay-btn-action num-btn" onclick="inputNumpad('5')">5</button>
+                <button type="button" class="clay-box clay-btn-action num-btn" onclick="inputNumpad('6')">6</button>
+                <button type="button" class="clay-box clay-btn-action num-btn" onclick="inputNumpad('7')">7</button>
+                <button type="button" class="clay-box clay-btn-action num-btn" onclick="inputNumpad('8')">8</button>
+                <button type="button" class="clay-box clay-btn-action num-btn" onclick="inputNumpad('9')">9</button>
+                <button type="button" class="clay-box clay-btn-action num-btn clear" onclick="clearNumpad()">C</button>
+                <button type="button" class="clay-box clay-btn-action num-btn" onclick="inputNumpad('0')">0</button>
+                <button type="button" class="clay-box clay-btn-action num-btn delete" onclick="deleteNumpad()">⌫</button>
+            </div>
+            
+            <div class="btn-group-row">
+                <button type="button" class="clay-box clay-btn-action pass-btn" onclick="passQuestion()">패스 🥲</button>
+                <button type="button" class="clay-box clay-btn-action submit-btn" onclick="checkAnswer()">확인</button>
+            </div>
+        </div>
+
+        <button type="button" id="open-ended-btn" class="clay-box clay-btn-action" onclick="passOpenEnded()">🗣️ 발표 완료 (넘어가기)</button>
+    </div>
+</div>
+
+<div id="admin-modal" class="modal-overlay">
+    <div class="clay-modal-box">
+        <div class="admin-header">
+            <h2>⚙️ 문제 출제 대시보드</h2>
+            <p>💡 <b>칸 번호</b> 지정. (미지정 칸은 수학 문제 출제)<br>
+            <span class="warn">*블루마블 모드는 0(출발), 9(무인도), 14(장기자랑), 23(처음으로) 특수칸 고정</span></p>
+        </div>
+        
+        <div class="q-list no-scrollbar" id="admin-q-list"></div>
+
+        <div class="admin-controls">
+            <button type="button" class="clay-box clay-btn-action btn-add" onclick="addQuestionField()">+ 1개 추가</button>
+            <button type="button" class="clay-box clay-btn-action btn-save" onclick="saveAdmin()">저장</button>
+            <button type="button" class="clay-box clay-btn-action btn-close" onclick="closeAdmin()">닫기</button>
+        </div>
+    </div>
+</div>
+
+<div id="feedback-overlay">
+    <div id="feedback-text"></div>
+    <div id="feedback-rank" class="rank-text"></div>
+</div>
+
+<script>
+    /* =========================================
+       1. 자체 사운드 엔진 
+       ========================================= */
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    let audioCtx = null;
+    let soundEnabled = true;
+
+    function initAudio() {
+        if (!audioCtx) audioCtx = new AudioContext();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+    }
+
+    function playTone(freq, type, duration, vol=0.1) {
+        if (!soundEnabled || !audioCtx) return;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type; 
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        osc.connect(gain); gain.connect(audioCtx.destination);
+        osc.start();
+        gain.gain.setValueAtTime(vol, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+        osc.stop(audioCtx.currentTime + duration);
+    }
+
+    function playRollSound() { 
+        if (!soundEnabled || !audioCtx) return;
+        let count = 0;
+        let interval = setInterval(() => {
+            playTone(200 + Math.random()*200, 'square', 0.05, 0.05);
+            count++; if(count > 15) clearInterval(interval);
+        }, 80);
+    }
+
+    function playJumpSound() { playTone(500, 'sine', 0.15, 0.1); }
+
+    function playCorrectSound() { 
+        if(!soundEnabled) return;
+        playTone(523.25, 'sine', 0.15, 0.2); 
+        setTimeout(() => playTone(659.25, 'sine', 0.2, 0.2), 100); 
+        setTimeout(() => playTone(783.99, 'sine', 0.4, 0.2), 200); 
+    }
+
+    function playWrongSound() { 
+        if(!soundEnabled) return;
+        playTone(300, 'sawtooth', 0.2, 0.15);
+        setTimeout(() => playTone(250, 'sawtooth', 0.4, 0.15), 150);
+    }
+
+    /* =========================================
+       2. 상태 변수 및 배열 
+       ========================================= */
+    let isPlaying = false;
+    let totalSpaces = 15;
+    let playerCount = 2;
+    let timerLimit = 30;
+    let currentTheme = 'marble'; 
+    let currentRank = 1;
+
+    let players = [
+        { el: document.getElementById('player1'), pos: 0, prevPos: 0, color: '#be123c', name: '1P', char: '🐰', finished: false, rank: 0, skipTurn: 0 },
+        { el: document.getElementById('player2'), pos: 0, prevPos: 0, color: '#1d4ed8', name: '2P', char: '🐱', finished: false, rank: 0, skipTurn: 0 },
+        { el: document.getElementById('player3'), pos: 0, prevPos: 0, color: '#047857', name: '3P', char: '🐼', finished: false, rank: 0, skipTurn: 0 },
+        { el: document.getElementById('player4'), pos: 0, prevPos: 0, color: '#b45309', name: '4P', char: '🐸', finished: false, rank: 0, skipTurn: 0 },
+        { el: document.getElementById('player5'), pos: 0, prevPos: 0, color: '#6d28d9', name: '5P', char: '🐷', finished: false, rank: 0, skipTurn: 0 },
+        { el: document.getElementById('player6'), pos: 0, prevPos: 0, color: '#be185d', name: '6P', char: '🦄', finished: false, rank: 0, skipTurn: 0 }
+    ];
+    let currentPlayerIdx = 0;
+    
+    let islandPositions = [];
+    let customQuestionsMap = {}; 
+    let boardQuestions = []; 
+    let currentQ = null;
+    let isMoving = false;
+    let timerInterval = null;
+    let moveInterval = null;
+
+    const setupScreen = document.getElementById('setup-screen');
+    const gameScreen = document.getElementById('game-screen');
+    const boardContainer = document.getElementById('board-container');
+    const turnIndicator = document.getElementById('turn-indicator');
+    const homeBtn = document.getElementById('home-btn');
+    const centerDiceWrapper = document.getElementById('center-dice-wrapper');
+    const questionModal = document.getElementById('question-modal');
+    const answerInput = document.getElementById('answer-input');
+    const timerBar = document.getElementById('timer-bar');
+
+    /* UI 업데이트 */
+    function updateThemeUI() {
+        const theme = document.getElementById('sel-theme').value;
+        const grpBoardSize = document.getElementById('grp-board-size');
+        if(theme === 'marble') {
+            grpBoardSize.style.opacity = '0.5';
+            grpBoardSize.style.pointerEvents = 'none';
+        } else {
+            grpBoardSize.style.opacity = '1';
+            grpBoardSize.style.pointerEvents = 'auto';
+        }
+    }
+    updateThemeUI(); 
+
+    function updateCharSelectUI() {
+        const count = parseInt(document.getElementById('sel-players').value);
+        document.getElementById('grp-p2').style.visibility = count >= 2 ? 'visible' : 'hidden';
+        document.getElementById('row-34').style.display = count >= 3 ? 'grid' : 'none';
+        document.getElementById('grp-p4').style.visibility = count >= 4 ? 'visible' : 'hidden';
+        document.getElementById('row-56').style.display = count >= 5 ? 'grid' : 'none';
+        document.getElementById('grp-p6').style.visibility = count >= 6 ? 'visible' : 'hidden';
+    }
+    
+    function selectChar(pNum, char) {
+        let container = document.getElementById(`p${pNum}-chars`);
+        if(!container) return;
+        let opts = container.getElementsByClassName('char-option');
+        for(let opt of opts) {
+            opt.classList.remove(`selected-${pNum}p`);
+            if(opt.innerText === char) opt.classList.add(`selected-${pNum}p`);
+        }
+        players[pNum-1].char = char;
+    }
+
+    // 보드 문제 리스트 세팅 (저장 즉시 동기화를 위해 함수 분리)
+    function buildBoardQuestions() {
+        boardQuestions = [];
+        for(let i=0; i<totalSpaces; i++) {
+            if (currentTheme === 'marble') {
+                if (i === 0) boardQuestions.push({ q: "완주하기", a: "" });
+                else if (i === 9) boardQuestions.push({ q: "1턴 휴식", a: "" });
+                else if (i === 14) boardQuestions.push({ q: "🌟 매력발산 🌟", a: "" });
+                else if (i === 23) boardQuestions.push({ q: "처음으로", a: "" });
+                else if (customQuestionsMap[i]) boardQuestions.push(customQuestionsMap[i]);
+                else {
+                    const num1 = Math.floor(Math.random() * 20) + 1;
+                    const num2 = Math.floor(Math.random() * 20) + 1;
+                    boardQuestions.push({ q: `${num1} + ${num2} = ?`, a: (num1 + num2).toString() });
+                }
+            } else {
+                if (customQuestionsMap[i]) boardQuestions.push(customQuestionsMap[i]);
+                else {
+                    const num1 = Math.floor(Math.random() * 20) + 1;
+                    const num2 = Math.floor(Math.random() * 20) + 1;
+                    boardQuestions.push({ q: `${num1} + ${num2} = ?`, a: (num1 + num2).toString() });
+                }
+            }
+        }
+    }
+
+    function startGame() {
+        initAudio(); 
+        soundEnabled = document.getElementById('sel-sound').value === 'on';
+        playerCount = parseInt(document.getElementById('sel-players').value);
+        currentTheme = document.getElementById('sel-theme').value;
+        
+        totalSpaces = currentTheme === 'marble' ? 28 : parseInt(document.getElementById('sel-board-size').value);
+        timerLimit = parseInt(document.getElementById('sel-timer').value);
+        
+        setupScreen.style.display = 'none';
+        gameScreen.style.display = 'flex';
+        homeBtn.style.display = 'flex';
+        isPlaying = true;
+        isMoving = false; 
+        currentRank = 1;
+
+        buildBoardQuestions();
+
+        for(let i=0; i<6; i++) {
+            players[i].pos = 0;
+            players[i].prevPos = 0;
+            players[i].finished = false;
+            players[i].rank = 0;
+            players[i].skipTurn = 0;
+            players[i].el.innerText = players[i].char;
+            players[i].el.style.display = i < playerCount ? 'flex' : 'none';
+        }
+        
+        currentPlayerIdx = 0;
+        updateTurnUI();
+        generateBoard();
+        centerDiceWrapper.style.opacity = '1';
+        centerDiceWrapper.style.pointerEvents = 'auto';
+    }
+
+    function goHome() {
+        isPlaying = false;
+        isMoving = false; 
+        clearInterval(timerInterval);
+        clearInterval(moveInterval); 
+
+        setupScreen.style.display = 'flex';
+        gameScreen.style.display = 'none';
+        homeBtn.style.display = 'none';
+        questionModal.style.display = 'none';
+        document.getElementById('admin-modal').style.display = 'none';
+        document.getElementById('feedback-overlay').style.display = 'none';
+    }
+
+    /* =========================================
+       3. 맵 생성 (테마 분기 및 크기 동적 조절)
+       ========================================= */
+    function generateBoard() {
+        const islandsWrapper = document.getElementById('islands-wrapper');
+        const bridgesSvg = document.getElementById('bridges');
+        islandsWrapper.innerHTML = '';
+        bridgesSvg.innerHTML = '';
+        islandPositions = [];
+
+        const width = boardContainer.clientWidth;
+        const height = boardContainer.clientHeight;
+
+        if (currentTheme === 'island') {
+            const cols = width > 600 ? 5 : 4; 
+            const rows = Math.ceil(totalSpaces / cols);
+            let svgPath = ''; let dPath = '';
+
+            for (let i = 0; i < totalSpaces; i++) {
+                const row = Math.floor(i / cols);
+                const isEvenRow = (row % 2 === 0);
+                const col = isEvenRow ? (i % cols) : ((cols - 1) - (i % cols));
+                const paddingX = 12; const paddingY = 15; 
+                const xPct = paddingX + (col * ((100 - paddingX * 2) / (cols - 1)));
+                const yPct = paddingY + (row * ((100 - paddingY * 2) / (rows > 1 ? rows - 1 : 1)));
+                const x = (width * xPct) / 100;
+                const y = (height * yPct) / 100;
+                islandPositions.push({ x, y });
+
+                const island = document.createElement('div');
+                island.className = 'island';
+                island.style.left = `${x}px`; island.style.top = `${y}px`;
+                
+                if (i === 0) { island.classList.add('start'); island.innerText = '출발'; }
+                else if (i === totalSpaces - 1) { island.classList.add('finish'); island.innerText = '도착'; }
+                else { island.innerText = i; }
+                islandsWrapper.appendChild(island);
+
+                if (i === 0) { dPath += `M ${x} ${y} `; } 
+                else {
+                    const pX = islandPositions[i - 1].x; const pY = islandPositions[i - 1].y;
+                    const cx = (pX + x) / 2; const cy = (pY + y) / 2 + (isEvenRow ? 40 : -40); 
+                    dPath += `Q ${cx} ${cy}, ${x} ${y} `;
+                }
+            }
+            svgPath += `<path d="${dPath}" fill="none" stroke="#b45309" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"/>`;
+            svgPath += `<path d="${dPath}" fill="none" stroke="#f59e0b" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>`;
+            bridgesSvg.innerHTML = svgPath;
+
+        } else {
+            // 블루마블 10x6 맵 (동적 크기 할당 - 여백 최소화, 모서리 쾌적하게)
+            let padX = Math.max(80, width * 0.07); 
+            let padY = Math.max(85, height * 0.08); 
+            let w = width - 2 * padX;
+            let h = height - 2 * padY;
+            let dx = w / 9; 
+            let dy = h / 5;
+
+            // 말판 동적 사이즈 
+            let spaceW = dx * 0.96;
+            let spaceH = dy * 0.96;
+            if(spaceW > 150) spaceW = 150; 
+            if(spaceH > 120) spaceH = 120;
+            if(spaceW < 60) spaceW = 60;   
+            if(spaceH < 50) spaceH = 50;
+
+            for(let i=0; i<totalSpaces; i++) {
+                let cx, cy;
+                if(i === 0) { cx = 9; cy = 5; } 
+                else if(i <= 8) { cx = 9 - i; cy = 5; } 
+                else if(i === 9) { cx = 0; cy = 5; } 
+                else if(i <= 13) { cx = 0; cy = 5 - (i - 9); } 
+                else if(i === 14) { cx = 0; cy = 0; } 
+                else if(i <= 22) { cx = i - 14; cy = 0; } 
+                else if(i === 23) { cx = 9; cy = 0; } 
+                else if(i <= 27) { cx = 9; cy = i - 23; } 
+
+                let x = padX + cx * dx;
+                let y = padY + cy * dy;
+                islandPositions.push({ x, y });
+
+                const space = document.createElement('div');
+                
+                let title = `${i}번`;
+                let qText = boardQuestions[i].q;
+                let specialClass = '';
+                
+                if (i === 0) { title = "🏁 출발"; qText = "완주하기"; specialClass = "special-0"; }
+                else if (i === 9) { title = "🏝️ 무인도"; qText = "1턴 휴식"; specialClass = "special-9"; }
+                else if (i === 14) { title = "🎤 장기자랑"; qText = "매력발산"; specialClass = "special-14"; }
+                else if (i === 23) { title = "🌪️ 앗!"; qText = "처음으로"; specialClass = "special-23"; }
+
+                space.className = `marble-space ${specialClass}`;
+                space.style.left = `${x}px`; space.style.top = `${y}px`;
+                space.style.width = `${spaceW}px`; space.style.height = `${spaceH}px`;
+                space.innerHTML = `<div class="marble-num">${title}</div><div class="marble-q">${qText}</div>`;
+                islandsWrapper.appendChild(space);
+            }
+
+            // 블루마블 중앙 로고
+            const centerLogo = document.createElement('div');
+            centerLogo.className = 'marble-center-logo';
+            centerLogo.innerHTML = '<span>말랑말랑<br>블루마블</span>';
+            islandsWrapper.appendChild(centerLogo);
+        }
+        
+        updateAllPlayerPositions(false);
+    }
+
+    function getOffset(index, total) {
+        if (total === 1) return { x: 0, y: -10 };
+        if (total === 2) return index === 0 ? { x: -15, y: -10 } : { x: 15, y: -10 };
+        if (total === 3) {
+            if (index === 0) return { x: 0, y: -20 };
+            if (index === 1) return { x: -18, y: 5 };
+            return { x: 18, y: 5 };
+        }
+        if (total === 4) {
+            if (index === 0) return { x: -18, y: -20 };
+            if (index === 1) return { x: 18, y: -20 };
+            if (index === 2) return { x: -18, y: 5 };
+            return { x: 18, y: 5 };
+        }
+        const row = index < 3 ? 0 : 1;
+        const col = index < 3 ? index : index - 3;
+        const y = row === 0 ? -25 : 8;
+        const rowCount = row === 0 ? 3 : (total - 3);
+        let x = 0;
+        if (rowCount === 3) x = (col - 1) * 22; 
+        else if (rowCount === 2) x = col === 0 ? -15 : 15;
+        return { x, y };
+    }
+
+    function updateAllPlayerPositions(animate = true, jumpingPlayerIdx = -1) {
+        if(!isPlaying || islandPositions.length === 0) return;
+
+        for (let i = 0; i < totalSpaces; i++) {
+            let occupants = [];
+            for(let j=0; j<playerCount; j++) {
+                let visualPos = currentTheme === 'marble' ? (players[j].pos % totalSpaces) : Math.min(players[j].pos, totalSpaces - 1);
+                if(visualPos === i) occupants.push(j);
+            }
+            
+            occupants.forEach((pIdx, arrIdx) => {
+                let p = players[pIdx];
+                let visualPos = currentTheme === 'marble' ? (p.pos % totalSpaces) : Math.min(p.pos, totalSpaces - 1);
+                const pos = islandPositions[visualPos];
+                
+                if(animate && pIdx === jumpingPlayerIdx) {
+                    p.el.style.transition = 'left 0.4s ease, top 0.4s ease, transform 0.3s';
+                    p.el.classList.add('jump-anim');
+                    setTimeout(() => p.el.classList.remove('jump-anim'), 400);
+                } else {
+                    p.el.style.transition = 'left 0.4s ease, top 0.4s ease, transform 0.3s';
+                }
+                
+                let offset = (visualPos === 0 && currentTheme === 'island') ? {x:-20 + Math.random()*40, y:-20 + Math.random()*40} : getOffset(arrIdx, occupants.length);
+                
+                p.el.style.left = `${pos.x}px`;
+                p.el.style.top = `${pos.y}px`;
+                p.el.style.transform = `translate(calc(-50% + ${offset.x}px), calc(-50% + ${offset.y}px)) scale(1)`;
+            });
+        }
+        if(animate && jumpingPlayerIdx !== -1) playJumpSound();
+    }
+
+    function updateTurnUI() {
+        const p = players[currentPlayerIdx];
+        turnIndicator.innerHTML = `${p.name} (${p.char}) 차례입니다!`;
+        turnIndicator.style.color = p.color;
+    }
+
+    /* =========================================
+       4. 클릭형 중앙 3D 주사위
+       ========================================= */
+    function rollDiceAction() {
+        if (isMoving || !isPlaying) return;
+        isMoving = true;
+        initAudio(); 
+
+        const diceEl = document.getElementById('dice');
+        document.querySelector('.dice-instruction').style.opacity = '0';
+        
+        diceEl.className = 'dice-3d rolling-fast';
+        playRollSound();
+
+        const result = Math.floor(Math.random() * 6) + 1;
+        const rotations = {
+            1: { x: 0, y: 0 }, 2: { x: -90, y: 0 }, 3: { x: 0, y: -90 },
+            4: { x: 0, y: 90 }, 5: { x: 90, y: 0 }, 6: { x: 0, y: 180 } 
+        };
+
+        setTimeout(() => {
+            if(!isPlaying) return;
+            diceEl.className = 'dice-3d'; 
+            const finalX = rotations[result].x + 720;
+            const finalY = rotations[result].y + 720;
+            
+            diceEl.style.transition = 'transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+            diceEl.style.transform = `translateZ(-55px) rotateX(${finalX}deg) rotateY(${finalY}deg)`;
+            
+            setTimeout(() => {
+                if(!isPlaying) return;
+                centerDiceWrapper.style.opacity = '0';
+                centerDiceWrapper.style.pointerEvents = 'none';
+                diceEl.style.transition = 'none'; 
+                movePlayerStepByStep(result);
+            }, 1200);
+        }, 1200);
+    }
+
+    function movePlayerStepByStep(steps) {
+        let p = players[currentPlayerIdx];
+        p.prevPos = p.pos;
+        
+        let targetPos = p.pos + steps;
+        if (currentTheme === 'island' && targetPos >= totalSpaces - 1) {
+            targetPos = totalSpaces - 1;
+        }
+
+        clearInterval(moveInterval); 
+        moveInterval = setInterval(() => {
+            if(!isPlaying) { clearInterval(moveInterval); return; }
+
+            if (p.pos < targetPos) {
+                p.pos++;
+                updateAllPlayerPositions(true, currentPlayerIdx);
+            } else {
+                clearInterval(moveInterval);
+                setTimeout(() => {
+                    if(!isPlaying) return;
+                    handlePostMove(p);
+                }, 500);
+            }
+        }, 450); 
+    }
+
+    function handlePostMove(p) {
+        if (currentTheme === 'marble') {
+            let visualPos = p.pos % totalSpaces;
+            if (p.pos > 0 && p.pos >= totalSpaces) {
+                p.finished = true; p.rank = currentRank++;
+                playCorrectSound(); showFeedback(`🎉 ${p.name} 완주 성공!`, true, `${p.rank}등 🏆`);
+                setTimeout(() => processNextTurn(), 2500);
+            } 
+            else if (visualPos === 9) { 
+                p.skipTurn = 1;
+                playWrongSound(); showFeedback(`🏝️ 무인도 도착!`, false, `다음 1턴 쉬기`);
+                setTimeout(() => processNextTurn(), 2500);
+            } 
+            else if (visualPos === 23) { 
+                playWrongSound(); showFeedback(`🌪️ 앗! 처음으로...`, false);
+                setTimeout(() => {
+                    p.pos = 0; updateAllPlayerPositions(true, currentPlayerIdx);
+                    setTimeout(() => processNextTurn(), 1000);
+                }, 1500);
+            } 
+            else {
+                askQuestion(visualPos);
+            }
+        } else {
+            if (p.pos >= totalSpaces - 1) {
+                p.finished = true; p.rank = currentRank++;
+                playCorrectSound(); showFeedback(`🎉 ${p.name} 도착!`, true, `${p.rank}등 🏆`);
+                setTimeout(() => processNextTurn(), 2500);
+            } else {
+                askQuestion(p.pos);
+            }
+        }
+    }
+
+    /* =========================================
+       5. 출제 및 정답 로직
+       ========================================= */
+    function askQuestion(spaceIndex) {
+        answerInput.value = '';
+        currentQ = boardQuestions[spaceIndex];
+        
+        let prefix = currentTheme === 'marble' ? '' : `[${spaceIndex}번 칸] `;
+        document.getElementById('question-text').innerText = `${prefix}${currentQ.q}`;
+
+        const isMenuOpenEnded = (currentQ.a === "");
+        const normalArea = document.getElementById('normal-input-area');
+        const openBtn = document.getElementById('open-ended-btn');
+
+        if(isMenuOpenEnded) {
+            normalArea.style.display = 'none'; openBtn.style.display = 'block';
+        } else {
+            normalArea.style.display = 'flex'; openBtn.style.display = 'none';
+        }
+
+        questionModal.style.display = 'flex';
+
+        if (timerLimit > 0) {
+            document.getElementById('timer-bar-container').style.display = 'block';
+            timerBar.style.width = '100%'; timerBar.style.transition = 'none';
+            setTimeout(() => { timerBar.style.transition = `width ${timerLimit}s linear`; timerBar.style.width = '0%'; }, 50);
+
+            let timeLeft = timerLimit;
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                if (timeLeft <= 0) { clearInterval(timerInterval); handleWrongAnswer("시간 초과! ⏰"); }
+            }, 1000);
+        } else {
+            document.getElementById('timer-bar-container').style.display = 'none';
+        }
+    }
+
+    function inputNumpad(num) { answerInput.value += num; }
+    function deleteNumpad() { answerInput.value = answerInput.value.slice(0, -1); }
+    function clearNumpad() { answerInput.value = ''; }
+
+    answerInput.addEventListener("keyup", function(event) { if (event.key === "Enter") checkAnswer(); });
+
+    function passQuestion() {
+        clearInterval(timerInterval); playWrongSound(); handleWrongAnswer('패스 (원위치) 🥲');
+    }
+
+    function checkAnswer() {
+        clearInterval(timerInterval);
+        const userAnswer = answerInput.value.trim().toLowerCase();
+        if (userAnswer === "") { alert("정답을 입력해주세요!"); return; }
+
+        questionModal.style.display = 'none';
+
+        if (userAnswer === currentQ.a.toLowerCase()) {
+            playCorrectSound(); showFeedback('⭕ 정답!', true);
+            setTimeout(() => processNextTurn(), 1500);
+        } else {
+            playWrongSound(); handleWrongAnswer('❌ 오답!');
+        }
+    }
+
+    function passOpenEnded() {
+        clearInterval(timerInterval); questionModal.style.display = 'none';
+        playCorrectSound(); showFeedback('✨ 참 잘했어요!', true);
+        setTimeout(() => processNextTurn(), 1500);
+    }
+
+    function handleWrongAnswer(msg) {
+        questionModal.style.display = 'none';
+        showFeedback(msg, false);
+        let p = players[currentPlayerIdx];
+        
+        setTimeout(() => {
+            p.pos = p.prevPos; 
+            updateAllPlayerPositions(true, currentPlayerIdx);
+            setTimeout(() => processNextTurn(), 1000);
+        }, 1500);
+    }
+
+    // 턴 진행 관리 (마지막 1명까지 지속)
+    function processNextTurn() {
+        if(!isPlaying) return;
+
+        let activePlayers = players.filter((p, i) => i < playerCount && !p.finished);
+        
+        if (activePlayers.length === 0 || (playerCount > 1 && activePlayers.length === 1)) {
+            if (activePlayers.length === 1) {
+                activePlayers[0].finished = true;
+                activePlayers[0].rank = currentRank; 
+            }
+            showFeedback('🎊 게임 종료!', true, '모든 모험이 끝났습니다.');
+            setTimeout(() => goHome(), 4000);
+            return;
+        }
+
+        do {
+            currentPlayerIdx = (currentPlayerIdx + 1) % playerCount;
+        } while (players[currentPlayerIdx].finished);
+
+        let p = players[currentPlayerIdx];
+
+        if (p.skipTurn > 0) {
+            p.skipTurn--;
+            showFeedback(`🏝️ ${p.name} 휴식 중...`, false, `다음 턴에 만나요!`);
+            setTimeout(() => processNextTurn(), 2000);
+            return;
+        }
+
+        updateTurnUI();
+        document.querySelector('.dice-instruction').style.opacity = '1';
+        centerDiceWrapper.style.opacity = '1';
+        centerDiceWrapper.style.pointerEvents = 'auto';
+        isMoving = false; // 이동 완료 후 락 해제
+    }
+
+    function showFeedback(text, isCorrect, rankText = "") {
+        const fbText = document.getElementById('feedback-text');
+        const fbRank = document.getElementById('feedback-rank');
+        const fbOverlay = document.getElementById('feedback-overlay');
+        
+        fbText.innerText = text;
+        fbText.className = isCorrect ? 'correct-text animate-pop' : 'wrong-text animate-pop';
+        
+        fbRank.innerText = rankText;
+        fbRank.style.display = rankText ? 'block' : 'none';
+
+        fbOverlay.style.display = 'flex';
+        
+        const displayTime = rankText ? 2500 : 1500;
+        setTimeout(() => { fbOverlay.style.display = 'none'; fbText.className = ''; }, displayTime);
+    }
+
+    /* =========================================
+       6. 교사 대시보드 (문제 실시간 동기화)
+       ========================================= */
+    function openAdmin() {
+        if(isMoving) return; 
+        document.getElementById('admin-modal').style.display = 'flex';
+        renderAdminQuestions();
+    }
+    function closeAdmin() {
+        document.getElementById('admin-modal').style.display = 'none';
+    }
+
+    function renderAdminQuestions() {
+        const adminQList = document.getElementById('admin-q-list');
+        adminQList.innerHTML = '';
+        
+        const savedKeys = Object.keys(customQuestionsMap);
+        if (savedKeys.length === 0) {
+            for(let i=1; i<=5; i++) { addQuestionField(i, "", ""); }
+        } else {
+            savedKeys.forEach(spaceNum => { addQuestionField(spaceNum, customQuestionsMap[spaceNum].q, customQuestionsMap[spaceNum].a); });
+        }
+    }
+
+    function addQuestionField(spaceNum = "", q = "", a = "") {
+        const adminQList = document.getElementById('admin-q-list');
+        const div = document.createElement('div');
+        div.className = 'q-item';
+        div.innerHTML = `
+            <div class="q-item-inputs">
+                <div class="q-item-row">
+                    <input type="number" class="space-input" placeholder="칸" value="${spaceNum}">
+                    <input type="text" class="q-input" placeholder="❓ 문제 입력 (예: 태양계 가장 큰 행성은?)" value="${q}">
+                </div>
+                <input type="text" class="a-input" placeholder="❗ 정답 입력 (비워두면 자유 발표 모드)" value="${a}">
+            </div>
+            <button type="button" class="clay-box clay-btn-action delete-btn" onclick="this.parentElement.remove()">🗑️</button>
+        `;
+        adminQList.appendChild(div);
+    }
+
+    function saveAdmin() {
+        const spaceInputs = document.querySelectorAll('.space-input');
+        const qInputs = document.querySelectorAll('.q-input');
+        const aInputs = document.querySelectorAll('.a-input');
+        
+        customQuestionsMap = {}; 
+        let savedCount = 0;
+
+        for (let i = 0; i < qInputs.length; i++) {
+            const spaceVal = parseInt(spaceInputs[i].value.trim());
+            const qVal = qInputs[i].value.trim();
+            const aVal = aInputs[i].value.trim(); 
+            
+            if (!isNaN(spaceVal) && qVal !== "") {
+                customQuestionsMap[spaceVal] = { q: qVal, a: aVal };
+                savedCount++;
+            }
+        }
+
+        // 게임 진행 중에 저장 시 말판에 실시간 즉시 반영
+        if (isPlaying) {
+            buildBoardQuestions();
+            generateBoard(); 
+        }
+
+        alert(`총 ${savedCount}개의 문제가 저장되었습니다.\n게임 화면에 즉시 반영됩니다.`);
+        closeAdmin();
+    }
+
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+            if (isPlaying) generateBoard(); 
+        }, 100);
+    });
+
+</script>
+</body>
+</html>
             --clay-p1: #f43f5e; 
             --clay-p2: #3b82f6; 
             --clay-p3: #10b981; 
