@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>말랑말랑 보드게임 (블루마블 프리미엄 V4.4 최종)</title>
+    <title>말랑말랑 보드게임 (블루마블 프리미엄 V4.5 최종수정판)</title>
     <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
     <style>
         /* =========================================
@@ -131,7 +131,7 @@
         .island.start { background: #6ee7b7; color: #065f46; width: 80px; height: 80px; font-size: 1.7rem;}
         .island.finish { background: #fca5a5; color: #991b1b; width: 80px; height: 80px; font-size: 1.7rem;}
 
-        /* 테마 2: 블루마블 타일 (크기/여백 동적 최적화 & 가독성 향상) */
+        /* 테마 2: 블루마블 타일 */
         .marble-space {
             position: absolute; border-radius: 12px; background: #ffffff;
             box-shadow: 4px 4px 8px rgba(0,0,0,0.1), inset 2px 2px 5px rgba(255,255,255,1), inset -2px -2px 5px rgba(0,0,0,0.05);
@@ -144,23 +144,22 @@
             font-weight: 600; width: 100%; border-bottom: 2px solid #cbd5e1; letter-spacing: -0.5px;
         }
         
-        /* [핵심 수정] 긴 텍스트 말판 내 완벽 최적화 */
         .marble-q {
-            font-size: 0.85rem;         /* 폰트 크기를 말판에 맞게 축소 */
+            font-size: 0.85rem; 
             line-height: 1.3;           
             padding: 4px 6px; 
             color: #1e293b; 
             text-align: center;
-            word-break: keep-all;       /* 단어 단위 묶음 유지 (한글 가독성) */
+            word-break: keep-all;       
             overflow-wrap: break-word;  
-            display: -webkit-box;       /* flex 충돌 방지를 위한 블록 세팅 */
-            -webkit-line-clamp: 3;      /* 3줄 초과 시 말줄임표(...) 자동 생성 */
+            display: -webkit-box;       
+            -webkit-line-clamp: 3;      
             -webkit-box-orient: vertical; 
             overflow: hidden; 
             font-weight: bold; 
             font-family: 'Malgun Gothic', 'Jua', sans-serif;
             margin-top: auto; 
-            margin-bottom: auto;        /* 상하 중앙 정렬 효과 */
+            margin-bottom: auto;        
         }
 
         .marble-space.special-0 { border-color: #10b981; background: #d1fae5; }
@@ -185,10 +184,10 @@
         .marble-center-logo span {
             font-size: 4rem; color: rgba(2, 132, 199, 0.15); text-align: center; font-weight: bold;
             text-shadow: 2px 2px 5px rgba(255,255,255,0.9), -1px -1px 3px rgba(0,0,0,0.05); line-height: 1.2;
-            margin-top: -60px; /* 주사위 공간 확보 */
+            margin-top: -60px;
         }
         
-        /* 토큰 시인성 극대화 (흰색 테두리 + 그림자 강조) */
+        /* 토큰 시인성 극대화 */
         .player-token {
             position: absolute; width: 40px; height: 40px; border-radius: 50%; z-index: 10;
             transition: left 0.4s ease-in-out, top 0.4s ease-in-out, transform 0.3s; pointer-events: none;
@@ -235,7 +234,6 @@
         .right  { transform: rotateY( 90deg) translateZ(55px); } .left   { transform: rotateY(-90deg) translateZ(55px); }
         .top    { transform: rotateX( 90deg) translateZ(55px); } .bottom { transform: rotateX(-90deg) translateZ(55px); }
         
-        /* 롤링 애니메이션 (자연스러운 회전) */
         .rolling-fast { animation: rollFast 0.6s linear infinite; }
         @keyframes rollFast { 
             0% { transform: translateZ(-55px) rotateX(-15deg) rotateY(-15deg); } 
@@ -243,7 +241,7 @@
         }
 
         /* =========================================
-           6. 문제 모달 UI (시인성/대비 강화 및 줄바꿈 최적화)
+           6. 문제 모달 UI (팝업 텍스트 줄바꿈 최적화)
            ========================================= */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.75);
@@ -259,15 +257,19 @@
         #timer-bar-container { width: 100%; height: 12px; background: #e2e8f0; border-radius: 6px; margin-bottom: 15px; overflow: hidden; display: none; }
         #timer-bar { width: 100%; height: 100%; background: #f43f5e; transition: width 1s linear; }
 
-        /* [핵심 수정] 팝업 문제 텍스트 두 줄 최적화 */
+        /* [핵심 수정] 팝업 문제 텍스트 강제 줄바꿈 및 간격 최적화 */
         #question-text { 
             font-size: 1.7rem; 
             margin-bottom: 20px; 
             color: #0f172a; 
-            word-break: keep-all;       /* 단어 단위 보존 */
+            word-break: break-all;      /* 띄어쓰기 없는 긴 텍스트도 무조건 줄바꿈 */
+            white-space: pre-wrap;      /* 엔터키 및 자연스러운 줄바꿈 보존 */
             overflow-wrap: break-word; 
-            line-height: 1.4;           /* 여유로운 줄간격 (2줄 보기 좋게) */
+            line-height: 1.4;           
             font-weight: bold;
+            width: 100%;
+            padding: 0 10px;
+            box-sizing: border-box;
         }
         
         #normal-input-area { display: flex; flex-direction: column; align-items: center; width: 100%; }
@@ -499,7 +501,15 @@
         <div class="admin-header">
             <h2>⚙️ 문제 출제 대시보드</h2>
             <p>💡 <b>칸 번호</b> 지정. (미지정 칸은 수학 문제 출제)<br>
-            <span class="warn">*블루마블 모드는 0(출발), 9(무인도), 14(장기자랑), 23(처음으로) 특수칸 고정</span></p>
+            <span class="warn">*블루마블 모드는 0(출발), 9(무인도), 14(장기자랑), 23(처음으로) 고정</span></p>
+            
+            <div id="admin-q-visible-wrapper" style="margin-top: 10px; background: #e0f2fe; padding: 8px 15px; border-radius: 12px; display: inline-flex; align-items: center; gap: 10px; border: 1px solid #bae6fd;">
+                <label style="font-size: 1rem; font-weight: bold; color: #0369a1; margin: 0;">블루마블 말판 문제 표시:</label>
+                <select id="sel-q-visible" style="font-family: 'Jua'; font-size: 1rem; padding: 4px 8px; border-radius: 8px; border: 1px solid #7dd3fc; outline: none; cursor: pointer; color: #1e293b;">
+                    <option value="show" selected>그대로 보이기</option>
+                    <option value="hide">❓ 기호로 감추기</option>
+                </select>
+            </div>
         </div>
         
         <div class="q-list no-scrollbar" id="admin-q-list"></div>
@@ -639,7 +649,6 @@
         players[pNum-1].char = char;
     }
 
-    // 보드 문제 리스트 세팅 (동기화 함수)
     function buildBoardQuestions() {
         boardQuestions = [];
         for(let i=0; i<totalSpaces; i++) {
@@ -697,7 +706,6 @@
         updateTurnUI();
         generateBoard();
         
-        // 주사위 초기 세팅 리셋
         const diceEl = document.getElementById('dice');
         diceEl.style.transition = 'none';
         diceEl.style.transform = 'translateZ(-55px) rotateX(-15deg) rotateY(-15deg)';
@@ -731,6 +739,8 @@
 
         const width = boardContainer.clientWidth;
         const height = boardContainer.clientHeight;
+
+        let isHidden = document.getElementById('sel-q-visible').value === 'hide';
 
         if (currentTheme === 'island') {
             const cols = width > 600 ? 5 : 4; 
@@ -769,8 +779,6 @@
             bridgesSvg.innerHTML = svgPath;
 
         } else {
-            // 블루마블 10x6 맵 (동적 크기 할당 및 여백 쾌적하게 조절)
-            // 상단 인디케이터가 겹치지 않게 padTop을 더 여유롭게 확보
             let padTop = Math.max(110, height * 0.15); 
             let padBottom = Math.max(60, height * 0.08); 
             let padX = Math.max(85, width * 0.08); 
@@ -780,7 +788,6 @@
             let dx = w / 9; 
             let dy = h / 5;
 
-            // 말판 동적 사이즈 
             let spaceW = dx * 0.96;
             let spaceH = dy * 0.96;
             if(spaceW > 160) spaceW = 160; 
@@ -813,6 +820,11 @@
                 else if (i === 9) { title = "🏝️ 무인도"; specialClass = "special-9"; }
                 else if (i === 14) { title = "🎤 장기자랑"; specialClass = "special-14"; }
                 else if (i === 23) { title = "🌪️ 앗!"; specialClass = "special-23"; }
+                else {
+                    if (isHidden) {
+                        qText = '<span style="font-size: 2.5rem; color: #cbd5e1;">❓</span>';
+                    }
+                }
 
                 space.className = `marble-space ${specialClass}`;
                 space.style.left = `${x}px`; space.style.top = `${y}px`;
@@ -821,7 +833,6 @@
                 islandsWrapper.appendChild(space);
             }
 
-            // 블루마블 중앙 로고
             const centerLogo = document.createElement('div');
             centerLogo.className = 'marble-center-logo';
             centerLogo.innerHTML = '<span>말랑말랑<br>블루마블</span>';
@@ -831,7 +842,6 @@
         updateAllPlayerPositions(false);
     }
 
-    // 겹침 방지 클러스터링
     function getOffset(index, total) {
         if (total === 1) return { x: 0, y: -10 };
         if (total === 2) return index === 0 ? { x: -15, y: -10 } : { x: 15, y: -10 };
@@ -921,7 +931,6 @@
             const finalX = rotations[result].x + 720;
             const finalY = rotations[result].y + 720;
             
-            // 리플로우 유도
             void diceEl.offsetWidth; 
             
             diceEl.style.transition = 'transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
@@ -1107,7 +1116,6 @@
             return;
         }
 
-        // === 주사위 위치를 초기 3D 뷰로 완벽 리셋 ===
         const diceEl = document.getElementById('dice');
         diceEl.style.transition = 'none';
         diceEl.style.transform = 'translateZ(-55px) rotateX(-15deg) rotateY(-15deg)';
@@ -1140,13 +1148,21 @@
     }
 
     /* =========================================
-       6. 교사 대시보드 (저장 시 말판 실시간 반영)
+       6. 교사 대시보드
        ========================================= */
     function openAdmin() {
         if(isMoving) return; 
         document.getElementById('admin-modal').style.display = 'flex';
+        
+        const theme = isPlaying ? currentTheme : document.getElementById('sel-theme').value;
+        const qVisibleWrapper = document.getElementById('admin-q-visible-wrapper');
+        if(qVisibleWrapper) {
+            qVisibleWrapper.style.display = theme === 'marble' ? 'inline-flex' : 'none';
+        }
+
         renderAdminQuestions();
     }
+    
     function closeAdmin() {
         document.getElementById('admin-modal').style.display = 'none';
     }
@@ -1199,7 +1215,6 @@
             }
         }
 
-        // 게임 진행 중에 저장 시 말판에 실시간 즉시 반영
         if (isPlaying) {
             buildBoardQuestions();
             generateBoard(); 
