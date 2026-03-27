@@ -23,7 +23,7 @@
             --clay-p2: #3b82f6;
 
             --clay-modal: #ffffff;
-            --text-color: #334155;
+            --text-color: #1e293b;
         }
 
         body, html {
@@ -32,7 +32,7 @@
             font-family: 'Jua', sans-serif;
             color: var(--text-color);
             touch-action: manipulation;
-            overflow: hidden; /* 전체 스크롤 완벽 차단 */
+            overflow: hidden; 
         }
 
         body { user-select: none; -webkit-user-select: none; }
@@ -100,7 +100,7 @@
         select {
             font-family: 'Jua', sans-serif; font-size: 1.1rem; padding: 10px; border-radius: 15px;
             border: 2px solid transparent; outline: none; background: white; box-shadow: inset 2px 2px 5px rgba(0,0,0,0.05);
-            color: #334155; cursor: pointer; width: 100%;
+            color: #1e293b; cursor: pointer; width: 100%;
         }
 
         .char-select-container { display: flex; gap: 5px; justify-content: space-around; background: white; padding: 8px; border-radius: 15px; box-shadow: inset 2px 2px 5px rgba(0,0,0,0.05);}
@@ -122,8 +122,7 @@
             box-shadow: 0 4px 8px rgba(0,0,0,0.1); z-index: 10;
         }
 
-        /* 말판 컨테이너: 남은 공간을 모두 차지하도록 flex: 1 */
-        .board-container { position: relative; width: 100%; max-width: 1000px; flex: 1; margin-bottom: 90px; } /* 하단 주사위 공간 확보 */
+        .board-container { position: relative; width: 100%; max-width: 1000px; flex: 1; margin-bottom: 90px; } 
         
         #bridges { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
         
@@ -150,7 +149,6 @@
             100% { margin-top: 0; transform: translate(-50%, -60%) scale(1); } 
         }
 
-        /* 플로팅 버튼 (홈, 사운드) */
         .float-btn {
             position: fixed; width: 50px; height: 50px; border-radius: 50%; font-size: 1.5rem; display: flex; align-items: center; justify-content: center; z-index: 500; box-shadow: 2px 2px 6px rgba(0,0,0,0.15);
         }
@@ -158,7 +156,7 @@
         #sound-btn { top: 75px; left: 15px; background: #fcd34d; }
 
         /* =========================================
-           5. 클릭 가능한 3D 주사위 트리거 (핵심)
+           5. 클릭 가능한 3D 주사위 트리거
            ========================================= */
         .dice-trigger-wrapper {
             position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
@@ -166,7 +164,7 @@
         }
         .dice-trigger-text {
             background: rgba(255,255,255,0.8); padding: 5px 15px; border-radius: 15px;
-            font-size: 1rem; color: #334155; margin-bottom: 10px; font-weight: bold;
+            font-size: 1rem; color: #1e293b; margin-bottom: 10px; font-weight: bold;
             animation: bounceText 1.5s infinite;
         }
         @keyframes bounceText {
@@ -185,7 +183,6 @@
         }
         .dice-trigger:active { transform: scale(0.9); }
 
-        /* 구르는 3D 주사위 오버레이 */
         #dice-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.4); backdrop-filter: blur(3px);
@@ -198,9 +195,12 @@
         }
         .dice-face {
             position: absolute; width: 120px; height: 120px; background: white; border: 4px solid #f1f5f9;
-            border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 4rem; font-weight: bold; color: #334155;
+            border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 4.5rem; font-weight: bold; color: #1e293b;
             box-shadow: inset 0 0 20px rgba(0,0,0,0.1), 0 0 15px rgba(0,0,0,0.2);
         }
+        /* 주사위 6 명확하게 밑줄 처리 */
+        .dice-face u { text-decoration-thickness: 4px; text-underline-offset: 6px; text-decoration-color: #ef4444; }
+        
         .front  { transform: rotateY(  0deg) translateZ(60px); }
         .back   { transform: rotateY(180deg) translateZ(60px); }
         .right  { transform: rotateY( 90deg) translateZ(60px); }
@@ -215,7 +215,7 @@
         }
 
         /* =========================================
-           6. 문제 팝업 및 대시보드 (공간 최적화)
+           6. 문제 팝업 및 패스/확인 버튼 
            ========================================= */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6);
@@ -231,49 +231,64 @@
         #timer-bar-container { width: 100%; height: 12px; background: #e2e8f0; border-radius: 6px; margin-bottom: 15px; overflow: hidden; display: none; }
         #timer-bar { width: 100%; height: 100%; background: #f43f5e; transition: width 1s linear; }
 
-        #question-text { font-size: 1.8rem; margin-bottom: 20px; color: #0f172a; word-break: keep-all; line-height: 1.3; }
+        #question-text { font-size: 1.8rem; margin-bottom: 20px; color: #0f172a; word-break: keep-all; line-height: 1.3; font-weight: bold;}
         
         .input-wrapper { position: relative; width: 100%; margin-bottom: 15px; }
         #answer-input {
             width: 100%; height: 50px; border-radius: 15px; background: #f8fafc;
             box-shadow: inset 3px 3px 6px rgba(0,0,0,0.1), inset -3px -3px 6px #fff;
-            font-size: 1.5rem; text-align: center; color: #334155; border: 2px solid transparent; 
-            outline: none; font-family: 'Jua'; box-sizing: border-box;
+            font-size: 1.6rem; text-align: center; color: #1e293b; border: 2px solid transparent; 
+            outline: none; font-family: 'Jua'; box-sizing: border-box; font-weight: bold;
         }
         #answer-input:focus { border: 2px solid #38bdf8; background: #ffffff; }
 
+        /* 숫자 키패드 시인성 강화 */
         .numpad {
-            display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; width: 100%; max-width: 250px; margin-bottom: 15px;
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 100%; max-width: 280px; margin-bottom: 20px;
         }
         .num-btn {
-            padding: 10px 0; font-size: 1.3rem; background: #e2e8f0; border-radius: 12px;
-            box-shadow: 3px 3px 6px rgba(148, 163, 184, 0.3), -3px -3px 6px #ffffff, inset 1px 1px 3px rgba(255,255,255,0.8);
+            padding: 12px 0; font-size: 1.5rem; background: #e2e8f0; border-radius: 12px; color: #1e293b; font-weight: bold;
+            box-shadow: 3px 3px 6px rgba(148, 163, 184, 0.4), -3px -3px 6px #ffffff, inset 1px 1px 3px rgba(255,255,255,0.8);
+            transition: all 0.1s;
         }
+        /* 누를 때 색상 반전 효과 */
+        .num-btn:active { background: #3b82f6; color: white; transform: scale(0.92); box-shadow: inset 3px 3px 8px rgba(0,0,0,0.3); }
         .num-btn.delete { background: #fca5a5; color: white;}
+        .num-btn.delete:active { background: #ef4444; }
         .num-btn.clear { background: #cbd5e1; }
+        .num-btn.clear:active { background: #94a3b8; }
 
-        .submit-btn { width: 150px; padding: 12px; font-size: 1.3rem; background: #3b82f6; }
+        .btn-group-row { display: flex; gap: 10px; width: 100%; }
+        .submit-btn { flex: 1.5; padding: 15px; font-size: 1.4rem; background: #3b82f6; }
+        .pass-btn { flex: 1; padding: 15px; font-size: 1.4rem; background: #94a3b8; color: white; }
+
         #open-ended-btn { display: none; width: 100%; padding: 15px; font-size: 1.5rem; background: #8b5cf6; margin-top: 10px; }
 
-        /* 대시보드 리스트 높이 확보 (10개 한눈에 보이게 최적화) */
-        #admin-modal .clay-modal-box { width: 95%; max-width: 700px; height: 90vh; max-height: 800px; padding: 25px; }
+        /* =========================================
+           7. 교사 대시보드 (5문제 기본, 칸번호 매핑)
+           ========================================= */
+        #admin-modal .clay-modal-box { width: 95%; max-width: 700px; height: 85vh; max-height: 750px; padding: 25px; }
         .admin-header h2 { margin: 0 0 5px 0; color: #0369a1; font-size: 1.8rem; }
-        .admin-header p { margin: 0 0 15px 0; font-size: 1rem; color: #64748b; background:#f1f5f9; padding:8px; border-radius: 10px;}
+        .admin-header p { margin: 0 0 15px 0; font-size: 0.95rem; color: #475569; background:#f1f5f9; padding:10px; border-radius: 10px; line-height: 1.3;}
 
         .q-list { 
             flex: 1; overflow-y: auto; width: 100%; text-align: left; margin-bottom: 15px; 
-            padding-right: 5px; display: flex; flex-direction: column; gap: 10px;
+            padding-right: 5px; display: flex; flex-direction: column; gap: 12px;
         }
         .q-item { 
-            background: #ffffff; padding: 10px; border-radius: 15px; border: 2px solid #e2e8f0;
+            background: #ffffff; padding: 12px; border-radius: 15px; border: 2px solid #e2e8f0;
             display: flex; align-items: center; gap: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);
         }
-        .q-item-inputs { flex: 1; display: flex; flex-direction: column; gap: 6px; }
+        .q-item-inputs { flex: 1; display: flex; flex-direction: column; gap: 8px; }
+        .q-item-row { display: flex; gap: 8px; }
+        
+        .space-input { width: 70px; text-align: center; color: #b45309; font-weight: bold; background: #fef3c7 !important; border-color: #fde68a !important; }
         .q-item input { 
-            width: 100%; padding: 8px 12px; font-family: 'Jua'; font-size: 1.1rem;
-            background: #f8fafc; border: none; border-radius: 8px; outline: none; box-sizing: border-box; box-shadow: inset 1px 1px 3px rgba(0,0,0,0.05);
+            width: 100%; padding: 10px 12px; font-family: 'Jua'; font-size: 1.1rem;
+            background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; outline: none; box-sizing: border-box;
         }
-        .delete-btn { background: #ef4444; width: 40px; height: 40px; border-radius: 10px; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; padding: 0; }
+        .q-item input:focus { border-color: #38bdf8; background: #fff;}
+        .delete-btn { background: #ef4444; width: 45px; height: 45px; border-radius: 10px; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; padding: 0; }
 
         .admin-controls { display: flex; gap: 10px; width: 100%; justify-content: center; }
         .admin-controls .clay-box { flex: 1; max-width: 150px; padding: 12px 0; font-size: 1.2rem; }
@@ -281,10 +296,10 @@
         .btn-save { background: #10b981; }
         .btn-close { background: #64748b; }
 
-        #feedback-overlay { position: fixed; top:0; left:0; width:100%; height:100%; display:none; justify-content:center; align-items:center; z-index: 2000; font-size: 8rem; font-weight: bold; pointer-events: none; text-align: center; }
+        #feedback-overlay { position: fixed; top:0; left:0; width:100%; height:100%; display:none; justify-content:center; align-items:center; z-index: 2000; font-size: 7rem; font-weight: bold; pointer-events: none; text-align: center; }
         .correct-text { color: #10b981; text-shadow: 0 0 30px white, 2px 2px 5px rgba(0,0,0,0.2); }
         .wrong-text { color: #ef4444; text-shadow: 0 0 30px white, 2px 2px 5px rgba(0,0,0,0.2); }
-        @keyframes popIn { 0% { transform: scale(0.3); opacity: 0; } 60% { transform: scale(1.2); opacity: 1; } 100% { transform: scale(1); opacity: 1; } }
+        @keyframes popIn { 0% { transform: scale(0.3); opacity: 0; } 60% { transform: scale(1.1); opacity: 1; } 100% { transform: scale(1); opacity: 1; } }
         .animate-pop { animation: popIn 0.5s ease-out forwards; }
 
     </style>
@@ -310,9 +325,9 @@
             <div class="setting-group">
                 <label>말판 개수:</label>
                 <select id="sel-board-size">
-                    <option value="10">10칸 (빠르게)</option>
-                    <option value="15" selected>15칸 (보통)</option>
-                    <option value="20">20칸 (길게)</option>
+                    <option value="15" selected>15칸 (빠르게)</option>
+                    <option value="20">20칸 (보통)</option>
+                    <option value="30">30칸 (길게)</option>
                 </select>
             </div>
         </div>
@@ -368,7 +383,7 @@
     <div id="dice-container">
         <div class="dice-3d" id="dice">
             <div class="dice-face front">1</div>
-            <div class="dice-face back">6</div>
+            <div class="dice-face back"><u>6</u></div>
             <div class="dice-face right">3</div>
             <div class="dice-face left">4</div>
             <div class="dice-face top">2</div>
@@ -400,7 +415,11 @@
                 <button class="clay-box clay-btn-action num-btn" onclick="inputNumpad('0')">0</button>
                 <button class="clay-box clay-btn-action num-btn delete" onclick="deleteNumpad()">⌫</button>
             </div>
-            <button class="clay-box clay-btn-action submit-btn" onclick="checkAnswer()">확인</button>
+            
+            <div class="btn-group-row">
+                <button class="clay-box clay-btn-action pass-btn" onclick="passQuestion()">패스 🥲</button>
+                <button class="clay-box clay-btn-action submit-btn" onclick="checkAnswer()">확인</button>
+            </div>
         </div>
 
         <button id="open-ended-btn" class="clay-box clay-btn-action" onclick="passOpenEnded()">🗣️ 발표 완료 (넘어가기)</button>
@@ -411,7 +430,7 @@
     <div class="clay-modal-box">
         <div class="admin-header">
             <h2>⚙️ 문제 출제 대시보드</h2>
-            <p>💡 <b>정답을 비우면</b> 학생이 자유롭게 말하는 오픈형 문제가 됩니다.</p>
+            <p>💡 <b>칸 번호</b>를 입력하면 해당 칸에 도착 시 문제가 출제됩니다.<br>(지정되지 않은 말판은 랜덤 수학 문제가 나옵니다.)</p>
         </div>
         
         <div class="q-list no-scrollbar" id="admin-q-list"></div>
@@ -428,7 +447,7 @@
 
 <script>
     /* =========================================
-       1. 자체 사운드 엔진 (가볍고 빠름)
+       1. 자체 사운드 엔진 
        ========================================= */
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     let audioCtx = null;
@@ -468,16 +487,7 @@
 
     function playJumpSound() { 
         if (!soundEnabled || !audioCtx) return;
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(400, audioCtx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(800, audioCtx.currentTime + 0.15);
-        osc.connect(gain); gain.connect(audioCtx.destination);
-        osc.start();
-        gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-        gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.15);
-        osc.stop(audioCtx.currentTime + 0.15);
+        playTone(500, 'sine', 0.15, 0.1);
     }
 
     function playCorrectSound() { 
@@ -489,8 +499,8 @@
 
     function playWrongSound() { 
         if(!soundEnabled) return;
-        playTone(300, 'sawtooth', 0.2, 0.1);
-        setTimeout(() => playTone(250, 'sawtooth', 0.4, 0.1), 150);
+        playTone(300, 'sawtooth', 0.2, 0.15);
+        setTimeout(() => playTone(250, 'sawtooth', 0.4, 0.15), 150);
     }
 
     /* =========================================
@@ -511,14 +521,14 @@
     let currentPlayerIdx = 0;
     
     let islandPositions = [];
-    let customQuestions = []; 
-    let gameQuestionPool = []; // 게임 시작 시 섞어서 사용하는 풀
+    
+    // 요구사항 반영: 특정 칸 번호에 매핑되는 문제 저장 객체
+    let customQuestionsMap = {}; // 예: { 1: {q: '수도?', a: '서울'}, 5: {q: '3+3?', a: '6'} }
     let currentQ = null;
     
     let isMoving = false;
     let timerInterval = null;
 
-    // DOMs
     const setupScreen = document.getElementById('setup-screen');
     const gameScreen = document.getElementById('game-screen');
     const boardContainer = document.getElementById('board-container');
@@ -553,9 +563,6 @@
         players[0].el.innerText = p1Char;
         players[1].el.innerText = p2Char;
 
-        // 문제 풀 세팅 (저장된 문제 섞기)
-        gameQuestionPool = [...customQuestions].sort(() => Math.random() - 0.5);
-
         setupScreen.style.display = 'none';
         gameScreen.style.display = 'flex';
         homeBtn.style.display = 'flex';
@@ -580,7 +587,7 @@
     }
 
     /* =========================================
-       3. 완벽하게 비율이 맞는 반응형 보드 생성
+       3. 반응형 보드 생성
        ========================================= */
     function generateBoard() {
         const islandsWrapper = document.getElementById('islands-wrapper');
@@ -589,7 +596,6 @@
         bridgesSvg.innerHTML = '';
         islandPositions = [];
 
-        // 컨테이너의 실제 가로/세로 크기 측정
         const width = boardContainer.clientWidth;
         const height = boardContainer.clientHeight;
         
@@ -604,14 +610,12 @@
             const isEvenRow = (row % 2 === 0);
             const col = isEvenRow ? (i % cols) : ((cols - 1) - (i % cols));
 
-            // 화면 크기에 비례하는(%) 위치 계산 (가장자리 여백 10%~90%)
-            const paddingX = 12; // 좌우 여백 %
-            const paddingY = 15; // 상하 여백 %
+            const paddingX = 12; 
+            const paddingY = 15; 
             
             const xPct = paddingX + (col * ((100 - paddingX * 2) / (cols - 1)));
             const yPct = paddingY + (row * ((100 - paddingY * 2) / (rows > 1 ? rows - 1 : 1)));
 
-            // %를 픽셀로 변환
             const x = (width * xPct) / 100;
             const y = (height * yPct) / 100;
             islandPositions.push({ x, y });
@@ -626,20 +630,17 @@
 
             islandsWrapper.appendChild(island);
 
-            // 부드러운 연결선(Path) 그리기
             if (i === 0) {
                 dPath += `M ${x} ${y} `;
             } else {
                 const pX = islandPositions[i - 1].x; 
                 const pY = islandPositions[i - 1].y;
-                // 베지에 곡선으로 U턴 라운딩 처리
                 const cx = (pX + x) / 2;
                 const cy = (pY + y) / 2 + (isEvenRow ? 40 : -40); 
                 dPath += `Q ${cx} ${cy}, ${x} ${y} `;
             }
         }
         
-        // 굵고 둥근 SVG 연결선
         svgPath += `<path d="${dPath}" fill="none" stroke="#b45309" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"/>`;
         svgPath += `<path d="${dPath}" fill="none" stroke="#f59e0b" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>`;
         bridgesSvg.innerHTML = svgPath;
@@ -663,7 +664,7 @@
         }
 
         let offsetX = -50; let offsetY = -60; 
-        if (playerCount === 2 && players[0].pos === players[1].pos) {
+        if (playerCount === 2 && players[0].pos === players[1].pos && p.pos !== 0) {
             if (pIdx === 0) { offsetX = -80; offsetY = -70; } 
             if (pIdx === 1) { offsetX = -20; offsetY = -40; } 
         } else if(playerCount === 2 && players[0].pos !== players[1].pos){
@@ -700,7 +701,7 @@
         const overlay = document.getElementById('dice-overlay');
         const diceEl = document.getElementById('dice');
         
-        triggerWrapper.style.opacity = '0.3'; // 누르면 살짝 흐려짐
+        triggerWrapper.style.opacity = '0.3'; 
         overlay.style.display = 'flex';
         
         diceEl.className = 'dice-3d rolling-fast';
@@ -744,10 +745,10 @@
                 setTimeout(() => {
                     if (p.pos === totalSpaces - 1) {
                         playCorrectSound();
-                        showFeedback(`🎉 ${p.name} 승리!`, true);
+                        showFeedback(`🎉 ${p.name} 도착! 승리!`, true);
                         setTimeout(() => goHome(), 3500);
                     } else {
-                        askQuestion();
+                        askQuestion(p.pos);
                     }
                 }, 500);
             }
@@ -755,20 +756,21 @@
     }
 
     /* =========================================
-       5. 출제 로직 (교사 문제 팝업 -> 없으면 수학)
+       5. 출제 로직 (칸 번호 1:1 매칭 & 수학문제)
        ========================================= */
-    function askQuestion() {
+    function askQuestion(spaceIndex) {
         answerInput.value = '';
         
-        // 풀에 문제가 남아있으면 하나 꺼냄, 없으면 수학 문제 생성
-        if (gameQuestionPool.length > 0) {
-            currentQ = gameQuestionPool.pop();
-            document.getElementById('question-text').innerText = currentQ.q;
+        // 요구사항 반영: 도착한 말판 번호(spaceIndex)와 대시보드 문제가 일치하는지 확인
+        if (customQuestionsMap[spaceIndex]) {
+            currentQ = customQuestionsMap[spaceIndex];
+            document.getElementById('question-text').innerText = `[${spaceIndex}번 칸] ${currentQ.q}`;
         } else {
+            // 지정된 문제가 없으면 랜덤 수학 문제
             const num1 = Math.floor(Math.random() * 20) + 1;
             const num2 = Math.floor(Math.random() * 20) + 1;
             currentQ = { q: `${num1} + ${num2} = ?`, a: (num1 + num2).toString() };
-            document.getElementById('question-text').innerText = currentQ.q;
+            document.getElementById('question-text').innerText = `[${spaceIndex}번 칸] ${currentQ.q}`;
         }
 
         const isMenuOpenEnded = (currentQ.a === "");
@@ -816,6 +818,13 @@
         if (event.key === "Enter") checkAnswer();
     });
 
+    // 요구사항 반영: 모를 경우 패스 버튼 로직
+    function passQuestion() {
+        clearInterval(timerInterval);
+        playWrongSound();
+        handleWrongAnswer('패스 (원위치) 🥲');
+    }
+
     function checkAnswer() {
         clearInterval(timerInterval);
         const userAnswer = answerInput.value.trim().toLowerCase();
@@ -834,6 +843,7 @@
         }
     }
 
+    // 오픈엔디드 (정답 비움) 성공 처리
     function passOpenEnded() {
         clearInterval(timerInterval);
         questionModal.style.display = 'none';
@@ -847,6 +857,7 @@
         showFeedback(msg, false);
         let p = players[currentPlayerIdx];
         
+        // 오답 또는 패스 시 원래 자리로 돌아감
         setTimeout(() => {
             p.pos = p.prevPos; 
             updatePlayerPosition(currentPlayerIdx, true); 
@@ -877,7 +888,7 @@
     }
 
     /* =========================================
-       6. 교사 대시보드 (기본 10문제 생성 로직 포함)
+       6. 교사 대시보드 (기본 5문제 & 칸 번호 매핑)
        ========================================= */
     function openAdmin() {
         document.getElementById('admin-modal').style.display = 'flex';
@@ -891,21 +902,30 @@
         const adminQList = document.getElementById('admin-q-list');
         adminQList.innerHTML = '';
         
-        // 저장된 문제가 없으면 기본적으로 10칸을 그려줍니다.
-        if (customQuestions.length === 0) {
-            for(let i=0; i<10; i++) addQuestionField(); 
+        const savedKeys = Object.keys(customQuestionsMap);
+        
+        // 요구사항 반영: 저장된 문제가 없으면 기본으로 1~5번 칸에 5개의 입력창 생성 (한 화면 최적화)
+        if (savedKeys.length === 0) {
+            for(let i=1; i<=5; i++) {
+                addQuestionField(i, "", ""); 
+            }
         } else {
-            customQuestions.forEach(item => addQuestionField(item.q, item.a));
+            savedKeys.forEach(spaceNum => {
+                addQuestionField(spaceNum, customQuestionsMap[spaceNum].q, customQuestionsMap[spaceNum].a);
+            });
         }
     }
 
-    function addQuestionField(q = "", a = "") {
+    function addQuestionField(spaceNum = "", q = "", a = "") {
         const adminQList = document.getElementById('admin-q-list');
         const div = document.createElement('div');
         div.className = 'q-item';
         div.innerHTML = `
             <div class="q-item-inputs">
-                <input type="text" class="q-input" placeholder="❓ 문제 입력 (예: 태양계에서 가장 큰 행성은?)" value="${q}">
+                <div class="q-item-row">
+                    <input type="number" class="space-input" placeholder="칸 번호" value="${spaceNum}">
+                    <input type="text" class="q-input" placeholder="❓ 문제 입력 (예: 태양계에서 가장 큰 행성은?)" value="${q}">
+                </div>
                 <input type="text" class="a-input" placeholder="❗ 정답 입력 (비워두면 자유 발표 모드)" value="${a}">
             </div>
             <button class="clay-box clay-btn-action delete-btn" onclick="this.parentElement.remove()">🗑️</button>
@@ -914,22 +934,28 @@
     }
 
     function saveAdmin() {
+        const spaceInputs = document.querySelectorAll('.space-input');
         const qInputs = document.querySelectorAll('.q-input');
         const aInputs = document.querySelectorAll('.a-input');
         
-        customQuestions = [];
+        customQuestionsMap = {}; // 맵 초기화
+        let savedCount = 0;
+
         for (let i = 0; i < qInputs.length; i++) {
+            const spaceVal = parseInt(spaceInputs[i].value.trim());
             const qVal = qInputs[i].value.trim();
             const aVal = aInputs[i].value.trim(); 
-            if (qVal !== "") {
-                customQuestions.push({ q: qVal, a: aVal });
+            
+            if (!isNaN(spaceVal) && qVal !== "") {
+                customQuestionsMap[spaceVal] = { q: qVal, a: aVal };
+                savedCount++;
             }
         }
-        alert(`총 ${customQuestions.length}개의 문제가 출제되었습니다.\n(나머지 칸은 수학 문제가 출제됩니다.)`);
+        alert(`총 ${savedCount}개의 문제가 말판에 배정되었습니다.\n(문제가 없는 칸은 수학 문제가 출제됩니다.)`);
         closeAdmin();
     }
 
-    // 창 크기가 변경될 때 비율에 맞춰 말판 위치 자동 재계산 (반응형의 핵심)
+    // 반응형 리사이즈 보정
     let resizeTimer;
     window.addEventListener('resize', () => {
         clearTimeout(resizeTimer);
